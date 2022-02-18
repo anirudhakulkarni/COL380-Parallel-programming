@@ -1,0 +1,235 @@
+n_threads = 8
+N = 4294967295 p = 40
+n_threads = 8
+N = 4294967295 p = 40
+n_threads = 8
+N = 4294967295 p = 40
+n_threads = 8
+N = 4294967295 p = 40
+n_threads = 8
+N = 4294967295 p = 40
+Reading data from file
+n_threads = 8
+N = 4294967295 p = 40
+Time taken to read file of 4294967295 elements with 40 buckets = 100152ms
+n: 4294967295 p: 40
+Standard sort done
+Left done
+Reading data from file
+n_threads = 8
+N = 4294967295 p = 40
+Time taken to read file of 4294967295 elements with 40 buckets = 100709ms
+n: 4294967295 p: 40
+Standard sort done
+Left done
+Reading data from file
+n_threads = 8
+N = 4294967295 p = 40
+Time taken to read file of 4294967295 elements with 40 buckets = 100741ms
+n: 4294967295 p: 40
+Standard sort done
+splitting on dmin: 0 dmax: 4294967294 smin: 0 smax: 38
+split_index: -2107902052
+Left done
+splitting on dmin: 0 dmax: -2107902052 smin: 0 smax: 18
+splitting on dmin: -2107902051 dmax: 4294967294 smin: 20 smax: 38
+Reading data from file
+n_threads = 8
+N = 4294967295 p = 40
+Time taken to read file of 4294967295 elements with 40 buckets = 100385ms
+n: 4294967295 p: 40
+Standard sort done
+splitting on dmin: 0 dmax: 4294967294 smin: 0 smax: 38
+split_index: 2187065244
+Left done
+Right done
+splitting on dmin: 2187065245 dmax: 4294967294 smin: 20 smax: 38
+splitting on dmin: 0 dmax: 2187065244 smin: 0 smax: 18
+split_index: 3252011622
+Left done
+splitting on dmin: Right done
+splitting on dmin: 3252011623 dmax: 4294967294 smin: 30 smax: 382187065245
+ dmax: 3252011622 smin: 20 smax: 28
+split_index: 1015679231
+Left done
+Right done
+splitting on dmin: 1015679232 dmax: 2187065244 smin: 10 smax: 18
+splitting on dmin: 0 dmax: 1015679231 smin: 0 smax: 8
+split_index: 3815629666
+Left done
+Right done
+splitting on dmin: 3815629667 dmax: 4294967294 smin: 35 smax: 38
+splitting on dmin: 3252011623 dmax: 3815629666 smin: 30 smax: 33
+split_index: 2717946200
+Left done
+splitting on dmin: Right done
+splitting on dmin: 2717946201 dmax: 3252011622 smin: 25 smax: 218706524528 dmax: 
+2717946200 smin: 20 smax: 23
+split_index: 519732732
+Left done
+splitting on dmin: Right done
+splitting on dmin: 519732733 dmax: 1015679231 smin: 5 smax: 8
+0 dmax: 519732732 smin: 0 smax: 3
+split_index: 1613130220
+Left done
+Right done
+splitting on dmin: 1613130221 dmax: 2187065244 smin: 15 smax: 18
+splitting on dmin: 1015679232 dmax: 1613130220 smin: 10 smax: 13
+split_index: 4013756271
+Left done
+Right done
+splitting on dmin: 4013756272 dmax: 4294967294 smin: 37 smax: 38
+split_index: 3454158106
+Left done
+Right done
+splitting on dmin: 3454158107 dmax: 3815629666 smin: 32 smax: 33
+split_index: 180040806
+Left done
+Right done
+splitting on dmin: 180040807 dmax: 519732732 smin: 2 smax: 3
+split_index: 2398553950
+Left done
+Right done
+splitting on dmin: 2398553951 dmax: 2717946200 smin: 22 smax: 23
+split_index: 723515950
+Left done
+Right done
+splitting on dmin: 723515951 dmax: 1015679231 smin: 7 smax: 8
+split_index: 2962963641
+Left done
+Right done
+splitting on dmin: 2962963642 dmax: 3252011622 smin: 27 smax: 28
+split_index: 4098800092
+Left done
+Right done
+splitting on dmin: 4098800093 dmax: 4294967294 smin: 38 smax: 38
+split_index: 1844257268
+Left done
+Right done
+splitting on dmin: 1844257269 dmax: 2187065244 smin: 17 smax: 18
+split_index: 827846492
+Left done
+Right done
+splitting on dmin: 827846493 dmax: 1015679231 smin: 8 smax: 8
+split_index: 3569753434
+Left done
+Right done
+splitting on dmin: 3569753435 dmax: 3815629666 smin: 33 smax: 33
+split_index: 2511307024
+Left done
+Right done
+splitting on dmin: 2511307025 dmax: 2717946200 smin: 23 smax: 23
+split_index: 1269644717
+Left done
+Right done
+splitting on dmin: 1269644718 dmax: 1613130220 smin: 12 smax: 13
+split_index: 303681119
+Left done
+Right done
+splitting on dmin: 303681120 dmax: 519732732 smin: 3 smax: 3
+split_index: 3058478079
+Left done
+Right done
+splitting on dmin: 3058478080 dmax: 3252011622 smin: 28 smax: 28
+split_index: 4180169731
+Left done
+Right done
+splitting on dmin: 4180169732 dmax: 4294967294 smin: 39 smax: 38
+splitting on dmin: 4098800093 dmax: 4180169731 smin: 38 smax: 37
+splitting on dmin: 4013756272 dmax: 4098800092 smin: 37 smax: 36
+splitting on dmin: 3815629667 dmax: 4013756271 smin: 35 smax: 35
+split_index: 934311324
+Left done
+Right done
+splitting on dmin: 934311325 dmax: 1015679231 smin: 9 smax: 8
+splitting on dmin: 827846493 dmax: 934311324 smin: 8 smax: 7
+splitting on dmin: 723515951 dmax: 827846492 smin: 7 smax: 6
+splitting on dmin: 519732733 dmax: 723515950 smin: 5 smax: 5
+split_index: 3150811817
+Left done
+Right done
+splitting on dmin: 3150811818 dmax: 3252011622 smin: 29 smax: 28
+splitting on dmin: 3058478080 dmax: 3150811817 smin: 28 smax: 27
+splitting on dmin: 2962963642 dmax: 3058478079 smin: 27 smax: 26
+splitting on dmin: 2717946201 dmax: 2962963641 smin: 25 smax: 25
+split_index: 2615320133
+Left done
+Right done
+splitting on dmin: 2615320134 dmax: 2717946200 smin: 24 smax: 23
+splitting on dmin: 2511307025 dmax: 2615320133 smin: 23 smax: 22
+splitting on dmin: 2398553951 dmax: 2511307024 smin: 22 smax: 21
+splitting on dmin: 2187065245 dmax: 2398553950 smin: 20 smax: 20
+split_index: 3925180689
+Left done
+Right done
+splitting on dmin: 3925180690 dmax: 4013756271 smin: 36 smax: 35
+splitting on dmin: 3815629667 dmax: 3925180689 smin: 35 smax: 34
+split_index: 408864614
+Left done
+Right done
+splitting on dmin: 408864615 dmax: 519732732 smin: 4 smax: 3
+splitting on dmin: 303681120 dmax: 408864614 smin: 3 smax: 2
+splitting on dmin: 180040807 dmax: 303681119 smin: 2 smax: 1
+splitting on dmin: 0 dmax: 180040806 smin: 0 smax: 0
+split_index: 1954306192
+Left done
+Right done
+splitting on dmin: 1954306193 dmax: 2187065244 smin: 18 smax: 18
+split_index: 3697110693
+Left done
+Right done
+splitting on dmin: 3697110694 dmax: 3815629666 smin: 34 smax: 33
+splitting on dmin: 3569753435 dmax: 3697110693 smin: 33 smax: 32
+splitting on dmin: 3454158107 dmax: 3569753434 smin: 32 smax: 31
+splitting on dmin: 3252011623 dmax: 3454158106 smin: 30 smax: 30
+split_index: 1388640316
+Left done
+Right done
+splitting on dmin: 1388640317 dmax: 1613130220 smin: 13 smax: 13
+split_index: 616573068
+Left done
+Right done
+splitting on dmin: 616573069 dmax: 723515950 smin: 6 smax: 5
+splitting on dmin: 519732733 dmax: 616573068 smin: 5 smax: 4
+split_index: 73612624
+Left done
+Right done
+splitting on dmin: 73612625 dmax: 180040806 smin: 1 smax: 0
+splitting on dmin: 0 dmax: 73612624 smin: 0 smax: -1
+splitting on dmin: 1613130221 dmax: 1844257268 smin: 15 smax: 15
+splitting on dmin: 1015679232 dmax: 1269644717 smin: 10 smax: 10
+split_index: 2286721673
+Left done
+Right done
+splitting on dmin: 2286721674 dmax: 2398553950 smin: 21 smax: 20
+splitting on dmin: 2187065245 dmax: 2286721673 smin: 20 smax: 19
+splitting on dmin: 1844257269 dmax: 1954306192 smin: 17 smax: 16
+splitting on dmin: 1269644718 dmax: 1388640316 smin: 12 smax: 11
+split_index: 2867560697
+Left done
+Right done
+splitting on dmin: 2867560698 dmax: 2962963641 smin: 26 smax: 25
+splitting on dmin: 2717946201 dmax: 2867560697 smin: 25 smax: 24
+split_index: 2054493170
+Left done
+Right done
+splitting on dmin: 2054493171 dmax: 2187065244 smin: 19 smax: 18splitting on dmin: 
+1954306193 dmax: 2054493170 smin: 18 smax: 17
+split_index: 3362589192
+Left done
+Right done
+splitting on dmin: 3362589193splitting on dmin:  dmax: 3454158106 smin: 31 smax: 303252011623
+ dmax: 3362589192 smin: 30 smax: 29
+split_index: 1505855965
+Left done
+splitting on dmin: Right done
+1388640317 dmax: 1505855965 smin: 13 smax: 12
+splitting on dmin: 1505855966 dmax: 1613130220 smin: 14 smax: 13
+Reading data from file
+n_threads = 8
+N = 4294967295 p = 40
+Time taken to read file of 4294967295 elements with 40 buckets = 103630ms
+Reading data from file
+n_threads = 24
+N = 4294967295 p = 40
+Time taken to read file of 4294967295 elements with 40 buckets = 101623ms

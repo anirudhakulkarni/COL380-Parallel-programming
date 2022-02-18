@@ -1,0 +1,6 @@
+git clone git://sourceware.org/git/valgrind.git
+cd valgrind
+./autogen.sh
+./configure --prefix=/home/cse/dual/cs5190421/COL380/valgrind
+make
+make install

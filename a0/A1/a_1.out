@@ -1,0 +1,483 @@
+--------------------------------------------------------------------------------
+I1 cache:         32768 B, 64 B, 8-way associative
+D1 cache:         32768 B, 64 B, 8-way associative
+LL cache:         31457280 B, 64 B, 30-way associative
+Command:          ./classify_v1 rfile dfile 1009072 4 1
+Data file:        cachegrind.out.6771
+Events recorded:  Ir I1mr ILmr Dr D1mr DLmr Dw D1mw DLmw
+Events shown:     Ir I1mr ILmr Dr D1mr DLmr Dw D1mw DLmw
+Event sort order: Ir I1mr ILmr Dr D1mr DLmr Dw D1mw DLmw
+Thresholds:       0.1 100 100 100 100 100 100 100 100
+Include dirs:     
+User annotated:   
+Auto-annotation:  on
+
+--------------------------------------------------------------------------------
+Ir                     I1mr           ILmr           Dr                     D1mr               DLmr            Dw                  D1mw             DLmw             
+--------------------------------------------------------------------------------
+5,795,021,143 (100.0%) 2,719 (100.0%) 2,329 (100.0%) 1,253,238,303 (100.0%) 1,298,715 (100.0%) 10,721 (100.0%) 74,602,528 (100.0%) 702,158 (100.0%) 322,195 (100.0%)  PROGRAM TOTALS
+
+--------------------------------------------------------------------------------
+Ir                     I1mr         ILmr         Dr                     D1mr             DLmr           Dw                  D1mw             DLmw              file:function
+--------------------------------------------------------------------------------
+5,029,332,814 (86.79%)   0            0          1,006,875,638 (80.34%)     501 ( 0.04%)     0                   0                0                0           /home/cse/dual/cs5190421/COL380/a1/A1/classify.h:classify(Data&, Ranges const&, unsigned int) [clone ._omp_fn.0]
+  234,188,449 ( 4.04%)  18 ( 0.66%)  14 ( 0.60%)    55,455,676 ( 4.42%)       8 ( 0.00%)     0          27,066,072 (36.28%)       0                0           /home/cc/vfaculty/omj.vfaculty/IITD/centOS7/GCC/gcc-9.1.0/x86_64-pc-linux-gnu/libstdc++-v3/include/bits/locale_facets.tcc:std::istreambuf_iterator<char, std::char_traits<char> > std::num_get<char, std::istreambuf_iterator<char, std::char_traits<char> > >::_M_extract_int<long>(std::istreambuf_iterator<char, std::char_traits<char> >, std::istreambuf_iterator<char, std::char_traits<char> >, std::ios_base&, std::_Ios_Iostate&, long&) const
+  124,914,753 ( 2.16%)   6 ( 0.22%)   5 ( 0.21%)    40,289,597 ( 3.21%)       0              0           6,844,633 ( 9.17%)       0                0           /home/cc/vfaculty/omj.vfaculty/IITD/centOS7/GCC/gcc-9.1.0/x86_64-pc-linux-gnu/libstdc++-v3/include/bits/streambuf_iterator.h:std::istreambuf_iterator<char, std::char_traits<char> > std::num_get<char, std::istreambuf_iterator<char, std::char_traits<char> > >::_M_extract_int<long>(std::istreambuf_iterator<char, std::char_traits<char> >, std::istreambuf_iterator<char, std::char_traits<char> >, std::ios_base&, std::_Ios_Iostate&, long&) const
+   97,070,475 ( 1.68%)   7 ( 0.26%)   6 ( 0.26%)    52,969,461 ( 4.23%)     336 ( 0.03%)   120 ( 1.12%)  6,845,468 ( 9.18%)       0                0           /home/cc/vfaculty/omj.vfaculty/IITD/centOS7/GCC/gcc-9.1.0/x86_64-pc-linux-gnu/libstdc++-v3/include/streambuf:std::istreambuf_iterator<char, std::char_traits<char> > std::num_get<char, std::istreambuf_iterator<char, std::char_traits<char> > >::_M_extract_int<long>(std::istreambuf_iterator<char, std::char_traits<char> >, std::istreambuf_iterator<char, std::char_traits<char> >, std::ios_base&, std::_Ios_Iostate&, long&) const
+   56,001,000 ( 0.97%)   1 ( 0.04%)   1 ( 0.04%)    15,711,408 ( 1.25%)       0              0           1,011,072 ( 1.36%)       0                0           /home/cc/vfaculty/omj.vfaculty/IITD/centOS7/GCC/gcc-9.1.0/x86_64-pc-linux-gnu/libstdc++-v3/include/bits/locale_facets.h:std::istreambuf_iterator<char, std::char_traits<char> > std::num_get<char, std::istreambuf_iterator<char, std::char_traits<char> > >::_M_extract_int<long>(std::istreambuf_iterator<char, std::char_traits<char> >, std::istreambuf_iterator<char, std::char_traits<char> >, std::ios_base&, std::_Ios_Iostate&, long&) const
+   39,432,111 ( 0.68%)   5 ( 0.18%)   5 ( 0.21%)    15,166,099 ( 1.21%)       5 ( 0.00%)     1 ( 0.01%)  6,066,442 ( 8.13%)       0                0           /home/cc/vfaculty/omj.vfaculty/IITD/centOS7/GCC/gcc-9.1.0/x86_64-pc-linux-gnu/libstdc++-v3/include/bits/istream.tcc:std::istream::sentry::sentry(std::istream&, bool)
+   34,376,486 ( 0.59%)   3 ( 0.11%)   3 ( 0.13%)    10,110,730 ( 0.81%)       0              0           6,066,440 ( 8.13%) 126,135 (17.96%)       0           /home/cc/vfaculty/omj.vfaculty/IITD/centOS7/GCC/gcc-9.1.0/x86_64-pc-linux-gnu/libstdc++-v3/include/bits/istream.tcc:std::istream::operator>>(int&)
+   21,232,533 ( 0.37%)   3 ( 0.11%)   1 ( 0.04%)     9,099,657 ( 0.73%)       8 ( 0.00%)     0           5,055,365 ( 6.78%)       0                0           /home/cc/vfaculty/omj.vfaculty/IITD/centOS7/GCC/gcc-9.1.0/x86_64-pc-linux-gnu/libstdc++-v3/include/bits/locale_facets.tcc:std::__use_cache<std::__numpunct_cache<char> >::operator()(std::locale const&) const
+   18,163,436 ( 0.31%)   4 ( 0.15%)   4 ( 0.17%)     7,063,536 ( 0.56%) 126,208 ( 9.72%)     0           1,009,092 ( 1.35%) 126,141 (17.96%)       0           /home/cse/dual/cs5190421/COL380/a1/A1/classify_v1.cpp:classify(Data&, Ranges const&, unsigned int) [clone ._omp_fn.2]
+   15,033,003 ( 0.26%)   4 ( 0.15%)   4 ( 0.17%)     3,003,999 ( 0.24%)       0              0           2,008,002 ( 2.69%)  61,876 ( 8.81%)  61,876 (19.20%)  /home/cse/dual/cs5190421/COL380/a1/A1/classify_v1.h:readRanges(char const*)
+   12,132,864 ( 0.21%)   1 ( 0.04%)   1 ( 0.04%)     4,044,288 ( 0.32%)       2 ( 0.00%)     0           3,033,216 ( 4.07%)       0                0           /home/cc/vfaculty/omj.vfaculty/IITD/centOS7/GCC/gcc-9.1.0/x86_64-pc-linux-gnu/libstdc++-v3/include/bits/locale_facets.h:std::istream::operator>>(int&)
+   11,122,168 ( 0.19%)   3 ( 0.11%)   2 ( 0.09%)     4,044,542 ( 0.32%)       3 ( 0.00%)     0           1,011,197 ( 1.36%)       0                0           /home/cc/vfaculty/omj.vfaculty/IITD/centOS7/GCC/gcc-9.1.0/x86_64-pc-linux-gnu/libstdc++-v3/include/streambuf:std::istream::sentry::sentry(std::istream&, bool)
+   11,099,814 ( 0.19%)   3 ( 0.11%)   3 ( 0.13%)     2,018,151 ( 0.16%)       1 ( 0.00%)     0           1,009,078 ( 1.35%)       0                0           /home/cse/dual/cs5190421/COL380/a1/A1/main_v1.cpp:readData(char const*, unsigned int)
+    9,877,850 ( 0.17%)   1 ( 0.04%)   1 ( 0.04%)             1 ( 0.00%)       0              0           1,011,072 ( 1.36%)       0                0           /home/cc/vfaculty/omj.vfaculty/IITD/centOS7/GCC/gcc-9.1.0/x86_64-pc-linux-gnu/libstdc++-v3/include/bits/char_traits.h:std::istreambuf_iterator<char, std::char_traits<char> > std::num_get<char, std::istreambuf_iterator<char, std::char_traits<char> > >::_M_extract_int<long>(std::istreambuf_iterator<char, std::char_traits<char> >, std::istreambuf_iterator<char, std::char_traits<char> >, std::ios_base&, std::_Ios_Iostate&, long&) const
+    8,072,606 ( 0.14%)   3 ( 0.11%)   2 ( 0.09%)     2,018,149 ( 0.16%) 126,136 ( 9.71%)     0                   8 ( 0.00%)       0                0           /home/cse/dual/cs5190421/COL380/a1/A1/main_v1.cpp:timedwork(Data&, Ranges const&, unsigned int)
+    7,077,504 ( 0.12%)   3 ( 0.11%)   1 ( 0.04%)     3,033,216 ( 0.24%)       0              0           1,011,072 ( 1.36%)       0                0           /home/cc/vfaculty/omj.vfaculty/IITD/centOS7/GCC/gcc-9.1.0/x86_64-pc-linux-gnu/libstdc++-v3/include/bits/basic_string.h:std::istreambuf_iterator<char, std::char_traits<char> > std::num_get<char, std::istreambuf_iterator<char, std::char_traits<char> > >::_M_extract_int<long>(std::istreambuf_iterator<char, std::char_traits<char> >, std::istreambuf_iterator<char, std::char_traits<char> >, std::ios_base&, std::_Ios_Iostate&, long&) const
+    7,063,592 ( 0.12%)   2 ( 0.07%)   2 ( 0.09%)     2,018,184 ( 0.16%) 508,554 (39.16%)     0                  20 ( 0.00%)       3 ( 0.00%)       0           /home/cse/dual/cs5190421/COL380/a1/A1/classify_v1.cpp:classify(Data&, Ranges const&, unsigned int) [clone ._omp_fn.1]
+    7,063,512 ( 0.12%)   0            0              2,018,144 ( 0.16%)   4,000 ( 0.31%)     0           1,009,072 ( 1.35%)       0                0           /home/cse/dual/cs5190421/COL380/a1/A1/classify.h:classify(Data&, Ranges const&, unsigned int) [clone ._omp_fn.1]
+    6,054,520 ( 0.10%)   2 ( 0.07%)   2 ( 0.09%)     1,009,112 ( 0.08%) 504,288 (38.83%)     0           1,009,092 ( 1.35%)       5 ( 0.00%)       2 ( 0.00%)  /home/cse/dual/cs5190421/COL380/a1/A1/classify_v1.cpp:classify(Data&, Ranges const&, unsigned int) [clone ._omp_fn.0]
+
+--------------------------------------------------------------------------------
+-- Auto-annotated source: /home/cse/dual/cs5190421/COL380/a1/A1/classify_v1.cpp
+--------------------------------------------------------------------------------
+Ir                 I1mr       ILmr       Dr                 D1mr             DLmr       Dw                 D1mw             DLmw        
+
+        .          .          .                  .                .          .                  .                .           .           #include "classify.h"
+        .          .          .                  .                .          .                  .                .           .           #include <omp.h>
+        .          .          .                  .                .          .                  .                .           .           #include <atomic>   
+        .          .          .                  .                .          .                  .                .           .           #define STRIDE 8
+        .          .          .                  .                .          .                  .                .           .           static std::atomic <int> freq[1001] __attribute__ ((aligned (32))); 
+        .          .          .                  .                .          .                  .                .           .           Data classify(Data &D, const Ranges &R, unsigned int numt)
+       10 ( 0.00%) 1 ( 0.04%) 1 ( 0.04%)         0                0          0                  8 ( 0.00%)       0           0           { // Classify each item in D into intervals (given by R). Finally, produce in D2 data sorted by interval
+        2 ( 0.00%) 1 ( 0.04%) 1 ( 0.04%)         0                0          0                  0                0           0               assert(numt < MAXTHREADS);
+        3 ( 0.00%) 0          0                  2 ( 0.00%)       0          0                  0                0           0               int RLen = R.num();
+        2 ( 0.00%) 0          0                  2 ( 0.00%)       0          0                  0                0           0               int nData = D.ndata;
+    2,015 ( 0.00%) 0          0                  0                0          0                  2 ( 0.00%)       0           0               Counter counts[RLen]; // I need on counter per interval. Each counter can keep pre-thread subcount.
+       67 ( 0.00%) 2 ( 0.07%) 2 ( 0.09%)        30 ( 0.00%)      12 ( 0.00%) 0                 21 ( 0.00%)       4 ( 0.00%)  2 ( 0.00%)  #pragma omp parallel num_threads(numt)
+        .          .          .                  .                .          .                  .                .           .               {
+        4 ( 0.00%) 0          0                  0                0          0                  4 ( 0.00%)       0           0                   int tid = omp_get_thread_num(); // I am thread number tid
+2,018,152 ( 0.03%) 0          0                  0                0          0                  0                0           0                   for (int i = tid; i < nData; i += numt)
+        .          .          .                  .                .          .                  .                .           .                   {                                                     // Threads together share-loop through all of Data
+4,036,308 ( 0.07%) 1 ( 0.04%) 1 ( 0.04%) 1,009,084 ( 0.08%) 504,277 (38.83%) 0          1,009,072 ( 1.35%)       2 ( 0.00%)  0                       D.data[i].value = R.range(D.data[i].key); // For each data, find the interval of data's key,
+        .          .          .                  .                .          .                  .                .           .                                                                         // and store the interval id in value. D is changed.
+        .          .          .                  .                .          .                  .                .           .                       // counts[v].increase(tid);                          // Found one key in interval v
+        .          .          .                  .                .          .                  .                .           .                   }
+        .          .          .                  .                .          .                  .                .           .               }
+       70 ( 0.00%) 1 ( 0.04%) 1 ( 0.04%)        33 ( 0.00%)      14 ( 0.00%) 0                 21 ( 0.00%)       4 ( 0.00%)  0           #pragma omp parallel num_threads(numt)
+        .          .          .                  .                .          .                  .                .           .               {
+        4 ( 0.00%) 0          0                  0                0          0                  4 ( 0.00%)       0           0                   int tid = omp_get_thread_num(); // I am thread number tid
+2,018,152 ( 0.03%) 0          0                  0                0          0                  0                0           0                   for (int i = tid; i < nData; i += numt)
+        .          .          .                  .                .          .                  .                .           .                   {                                                     // Threads together share-loop through all of Data
+1,009,084 ( 0.02%) 0          0                  8 ( 0.00%)       3 ( 0.00%) 0                  0                0           0                       int v = D.data[i].value; // For each data, find the interval of data's key,
+        .          .          .                  .                .          .                  .                .           .                                                                         // and store the interval id in value. D is changed.
+4,036,292 ( 0.07%) 1 ( 0.04%) 1 ( 0.04%) 2,018,144 ( 0.16%) 508,538 (39.16%) 0                  0                0           0                       counts[v].increase(tid);                          // Found one key in interval v
+        .          .          .                  .                .          .                  .                .           .                   }
+        .          .          .                  .                .          .                  .                .           .               }
+        .          .          .                  .                .          .                  .                .           .           
+        .          .          .                  .                .          .                  .                .           .               // Accumulate all sub-counts (in each interval;'s counter) into rangecount
+        7 ( 0.00%) 1 ( 0.04%) 1 ( 0.04%)         2 ( 0.00%)       1 ( 0.00%) 0                  1 ( 0.00%)       0           0               unsigned int *rangecount = new unsigned int[RLen];
+        .          .          .                  .                .          .                  .                .           .               //    memset(rangecount,0,sizeof(rangecount));
+    2,012 ( 0.00%) 0          0                  1 ( 0.00%)       0          0                  0                0           0               for (int r = 0; r < RLen; r++)
+        .          .          .                  .                .          .                  .                .           .               { // For all intervals
+    1,001 ( 0.00%) 1 ( 0.04%) 1 ( 0.04%)         0                0          0              1,001 ( 0.00%)      63 ( 0.01%) 62 ( 0.02%)          rangecount[r] = 0;
+        .          .          .                  .                .          .                  .                .           .                   freq[r]=0;
+   18,018 ( 0.00%) 1 ( 0.04%) 1 ( 0.04%)     2,002 ( 0.00%)   1,000 ( 0.08%) 0                  0                0           0                   for (int t = 0; t < numt; t++) // For all threads
+    4,004 ( 0.00%) 0          0              4,004 ( 0.00%)       0          0                  0                0           0                       rangecount[r] += counts[r].get(t);
+        .          .          .                  .                .          .                  .                .           .                   // std::cout << rangecount[r] << " elements in Range " << r << "\n"; // Debugging statement
+        .          .          .                  .                .          .                  .                .           .               }
+        .          .          .                  .                .          .                  .                .           .           
+        .          .          .                  .                .          .                  .                .           .               // Compute prefx sum on rangecount.
+    2,006 ( 0.00%) 0          0                  0                0          0                  0                0           0               for (int i = 1; i < RLen; i++)
+        .          .          .                  .                .          .                  .                .           .               {
+    3,000 ( 0.00%) 0          0              2,000 ( 0.00%)      48 ( 0.00%) 0                  0                0           0                   rangecount[i] += rangecount[i - 1];
+        .          .          .                  .                .          .                  .                .           .               }
+        .          .          .                  .                .          .                  .                .           .           
+        .          .          .                  .                .          .                  .                .           .               // Now rangecount[i] has the number of elements in intervals before the ith interval.
+        .          .          .                  .                .          .                  .                .           .           
+        .          .          .                  .                .          .                  .                .           .               Data D2 = Data(nData); // Make a copy
+        .          .          .                  .                .          .                  .                .           .           
+        .          .          .                  .                .          .                  .                .           .           // #pragma omp parallel num_threads(numt)
+        .          .          .                  .                .          .                  .                .           .           //     {
+-- line 56 ----------------------------------------
+-- line 66 ----------------------------------------
+        .          .          .                  .                .          .                  .                .           .           
+        .          .          .                  .                .          .                  .                .           .           //                     // rcount++;
+        .          .          .                  .                .          .                  .                .           .           //                     D2.data[rangecount[r - 1] + rcount++] = D.data[d]; // Copy it to the appropriate place in D2.
+        .          .          .                  .                .          .                  .                .           .           //                                                                        //    D2.data[rangecount[r - 1] + rcount++] = D.data[d]; // Copy it to the appropriate place in D2.
+        .          .          .                  .                .          .                  .                .           .           //         } 
+        .          .          .                  .                .          .                  .                .           .           //         /// BEST
+        .          .          .                  .                .          .                  .                .           .           //     }
+        .          .          .                  .                .          .                  .                .           .           
+       72 ( 0.00%) 1 ( 0.04%) 1 ( 0.04%)        33 ( 0.00%)       8 ( 0.00%) 0                 22 ( 0.00%)       5 ( 0.00%)  0           #pragma omp parallel num_threads(numt)
+        .          .          .                  .                .          .                  .                .           .               {
+        4 ( 0.00%) 0          0                  0                0          0                  4 ( 0.00%)       0           0                   int tid = omp_get_thread_num();
+  378,452 ( 0.01%) 1 ( 0.04%) 1 ( 0.04%)         0                0          0                  0                0           0                    for (uint d = tid * nData / numt; d < ((tid + 1) * nData) / numt; d+=STRIDE) {
+3,657,912 ( 0.06%) 1 ( 0.04%) 1 ( 0.04%)         0                0          0                  0                0           0                         for (uint i = d; i < std::min(d+STRIDE, ((tid + 1) * nData) / numt); i++)                                               
+        .          .          .                  .                .          .                  .                .           .                         {                                                                                                                          
+4,036,288 ( 0.07%) 1 ( 0.04%) 1 ( 0.04%) 3,027,216 ( 0.24%) 126,137 ( 9.71%) 0                  0                0           0                             int r = D.data[i].value;                                                                                                
+2,018,144 ( 0.03%) 0          0                  0                0          0                  0                0           0                             assert(r > 0);                                                                                                          
+8,072,576 ( 0.14%) 0          0          4,036,288 ( 0.32%)      64 ( 0.00%) 0          1,009,072 ( 1.35%) 126,138 (17.96%)  0                             D2.data[rangecount[r-1]+freq[r]++] = D.data[i];                                                                      
+        .          .          .                  .                .          .                  .                .           .                         } 
+        .          .          .                  .                .          .                  .                .           .                    }
+        .          .          .                  .                .          .                  .                .           .                   /// BEST
+        .          .          .                  .                .          .                  .                .           .               }
+        .          .          .                  .                .          .                  .                .           .           
+        2 ( 0.00%) 1 ( 0.04%) 1 ( 0.04%)         2 ( 0.00%)       0          0                  0                0           0               return D2;
+       10 ( 0.00%) 0          0                  7 ( 0.00%)       1 ( 0.00%) 0                  0                0           0           }
+
+--------------------------------------------------------------------------------
+-- Auto-annotated source: /home/cse/dual/cs5190421/COL380/a1/A1/classify_v1.h
+--------------------------------------------------------------------------------
+Ir                 I1mr       ILmr       Dr                 D1mr       DLmr       Dw                 D1mw             DLmw             
+
+-- line 63 ----------------------------------------
+        .          .          .                  .          .          .                  .                .                .               std::mutex cmutex;
+        .          .          .                  .          .          .                  .                .                .           };
+        .          .          .                  .          .          .                  .                .                .           
+        .          .          .                  .          .          .                  .                .                .           struct Range
+        .          .          .                  .          .          .                  .                .                .           { // Integer range
+        .          .          .                  .          .          .                  .                .                .           
+        .          .          .                  .          .          .                  .                .                .               Range(int a = 1, int b = 0)
+        .          .          .                  .          .          .                  .                .                .               { // Constructor. Defaults to *bad* range
+  501,501 ( 0.01%) 0          0                  0          0          0            501,501 ( 0.67%)  61,876 ( 8.81%)  61,876 (19.20%)          lo = a;
+1,003,000 ( 0.02%) 1 ( 0.04%) 1 ( 0.04%)         0          0          0            501,500 ( 0.67%)       0                0                   hi = b;
+        .          .          .                  .          .          .                  .                .                .               }
+        .          .          .                  .          .          .                  .                .                .           
+        .          .          .                  .          .          .                  .                .                .               bool within(int val) const
+        .          .          .                  .          .          .                  .                .                .               { // Return if val is within this range
+        .          .          .                  .          .          .                  .                .                .                   return (lo <= val && val <= hi);
+        .          .          .                  .          .          .                  .                .                .               }
+        .          .          .                  .          .          .                  .                .                .           
+        .          .          .                  .          .          .                  .                .                .               bool strictlyin(int val) const
+        .          .          .                  .          .          .                  .                .                .               { // Return if val is strictly inside this range
+4,003,998 ( 0.07%) 1 ( 0.04%) 1 ( 0.04%) 2,001,999 ( 0.16%) 0          0                  0                0                0                   return (lo < val && val < hi);
+        .          .          .                  .          .          .                  .                .                .               }
+        .          .          .                  .          .          .                  .                .                .           
+        .          .          .                  .          .          .                  .                .                .               int lo;
+        .          .          .                  .          .          .                  .                .                .               int hi;
+        .          .          .                  .          .          .                  .                .                .           };
+        .          .          .                  .          .          .                  .                .                .           
+        .          .          .                  .          .          .                  .                .                .           class Ranges
+        .          .          .                  .          .          .                  .                .                .           {
+        .          .          .                  .          .          .                  .                .                .           public:
+        .          .          .                  .          .          .                  .                .                .               Ranges()
+        .          .          .                  .          .          .                  .                .                .               { // Initialize with a single unreal interval
+        1 ( 0.00%) 0          0                  0          0          0                  0                0                0                   _num = 1;
+        3 ( 0.00%) 1 ( 0.04%) 1 ( 0.04%)         0          0          0                  1 ( 0.00%)       0                0                   _ranges = new Range(1, 0); // Started with this. Its not a real interval as nothing lies inside it.
+        .          .          .                  .          .          .                  .                .                .               }
+        .          .          .                  .          .          .                  .                .                .           
+        .          .          .                  .          .          .                  .                .                .               Ranges &operator+=(const Range range)
+        .          .          .                  .          .          .                  .                .                .               { // Add one more interval to this list
+        .          .          .                  .          .          .                  .                .                .                   if (newrange(range))
+        .          .          .                  .          .          .                  .                .                .                   { // If it already exists, do not add
+        .          .          .                  .          .          .                  .                .                .                       Range *oranges = _ranges;
+1,015,000 ( 0.02%) 0          0                  0          0          0              2,000 ( 0.00%)       0                0                       _ranges = new Range[_num + 1];
+        .          .          .                  .          .          .                  .                .                .                       assert(NULL != _ranges);
+1,001,000 ( 0.02%) 0          0                  0          0          0                  0                0                0                       for (int r = 0; r < _num; r++)
+        .          .          .                  .          .          .                  .                .                .                       {
+1,001,000 ( 0.02%) 0          0          1,001,000 ( 0.08%) 0          0                  0                0                0                           set(r, oranges[r].lo, oranges[r].hi); // copy old intervals
+        .          .          .                  .          .          .                  .                .                .                       }
+        .          .          .                  .          .          .                  .                .                .                       set(_num++, range.lo, range.hi); // Add the new interval at the end
+        .          .          .                  .          .          .                  .                .                .                   }
+        .          .          .                  .          .          .                  .                .                .                   return *this;
+        .          .          .                  .          .          .                  .                .                .               }
+        .          .          .                  .          .          .                  .                .                .           
+        .          .          .                  .          .          .                  .                .                .               int range(int val, bool strict = false) const
+        .          .          .                  .          .          .                  .                .                .               { // Tell the range in which val lies (strict => boundary match not ok)
+        .          .          .                  .          .          .                  .                .                .                   if (strict)
+        .          .          .                  .          .          .                  .                .                .                   {
+4,500,500 ( 0.08%) 1 ( 0.04%) 1 ( 0.04%)         0          0          0                  0                0                0                       for (int r = 0; r < _num; r++) // Look through all intervals
+        .          .          .                  .          .          .                  .                .                .                           if (_ranges[r].strictlyin(val))
+        .          .          .                  .          .          .                  .                .                .                               return r;
+        .          .          .                  .          .          .                  .                .                .                   }
+        .          .          .                  .          .          .                  .                .                .                   else
+        .          .          .                  .          .          .                  .                .                .                   {
+        .          .          .                  .          .          .                  .                .                .                       for (int r = 0; r < _num; r++) // Look through all intervals
+        .          .          .                  .          .          .                  .                .                .                           if (_ranges[r].within(val))
+        .          .          .                  .          .          .                  .                .                .                               return r;
+-- line 126 ----------------------------------------
+-- line 141 ----------------------------------------
+        .          .          .                  .          .          .                  .                .                .           private:
+        .          .          .                  .          .          .                  .                .                .               Range *_ranges;
+        .          .          .                  .          .          .                  .                .                .               int _num;
+        .          .          .                  .          .          .                  .                .                .           
+        .          .          .                  .          .          .                  .                .                .               void set(int i, int lo, int hi)
+        .          .          .                  .          .          .                  .                .                .               { // set the extreme values of a specific interval
+        .          .          .                  .          .          .                  .                .                .                   if (i < _num)
+        .          .          .                  .          .          .                  .                .                .                   {
+  502,500 ( 0.01%) 0          0                  0          0          0            501,500 ( 0.67%)       0                0                       _ranges[i].lo = lo;
+1,502,500 ( 0.03%) 0          0                  0          0          0            501,500 ( 0.67%)       0                0                       _ranges[i].hi = hi;
+        .          .          .                  .          .          .                  .                .                .                   }
+    1,000 ( 0.00%) 0          0              1,000 ( 0.00%) 0          0                  0                0                0               }
+        .          .          .                  .          .          .                  .                .                .           
+        .          .          .                  .          .          .                  .                .                .               bool newrange(const Range r)
+        .          .          .                  .          .          .                  .                .                .               {                                                                            // Is the range r already in my list, or is it a new one?
+    1,000 ( 0.00%) 0          0                  0          0          0                  0                0                0                   return (range(r.lo, true) == BADRANGE && range(r.hi, true) == BADRANGE); // Overlaps are not allowed.
+        .          .          .                  .          .          .                  .                .                .               }
+        .          .          .                  .          .          .                  .                .                .           };
+        .          .          .                  .          .          .                  .                .                .           
+        .          .          .                  .          .          .                  .                .                .           struct Data
+        .          .          .                  .          .          .                  .                .                .           {
+        .          .          .                  .          .          .                  .                .                .           
+2,018,144 ( 0.03%) 1 ( 0.04%) 1 ( 0.04%)         0          0          0          1,009,072 ( 1.35%) 126,134 (17.96%) 126,134 (39.15%)      struct Item
+        .          .          .                  .          .          .                  .                .                .               {
+        .          .          .                  .          .          .                  .                .                .                   int key;
+        .          .          .                  .          .          .                  .                .                .                   int value = -1;
+        .          .          .                  .          .          .                  .                .                .               };
+        .          .          .                  .          .          .                  .                .                .           
+        .          .          .                  .          .          .                  .                .                .               unsigned int ndata = 0;
+        .          .          .                  .          .          .                  .                .                .               Item *data = NULL;
+        .          .          .                  .          .          .                  .                .                .           
+        .          .          .                  .          .          .                  .                .                .               Data(int n)
+        .          .          .                  .          .          .                  .                .                .               { // n = Maximum number of items  storable
+        .          .          .                  .          .          .                  .                .                .                   ndata = n;
+2,018,157 ( 0.03%) 0          0                  0          0          0                  1 ( 0.00%)       0                0                   data = new Item[n];
+        .          .          .                  .          .          .                  .                .                .                   assert(NULL != data);
+        .          .          .                  .          .          .                  .                .                .               }
+        .          .          .                  .          .          .                  .                .                .           
+        .          .          .                  .          .          .                  .                .                .               void reset()
+        .          .          .                  .          .          .                  .                .                .               {
+2,018,146 ( 0.03%) 0          0                  0          0          0                  0                0                0                   for (int i = 0; i < ndata; i++)
+2,018,149 ( 0.03%) 1 ( 0.04%) 1 ( 0.04%)         1 ( 0.00%) 0          0          1,009,072 ( 1.35%) 126,135 (17.96%)       0                       data[i].value = -1;
+        .          .          .                  .          .          .                  .                .                .               }
+        .          .          .                  .          .          .                  .                .                .               void inspect()
+        .          .          .                  .          .          .                  .                .                .               {
+        .          .          .                  .          .          .                  .                .                .                   for (int i = 0; i < ndata; i++)
+        .          .          .                  .          .          .                  .                .                .                       std::cout << i << ": " << data[i].key << " -- " << data[i].value << "\n";
+        .          .          .                  .          .          .                  .                .                .               }
+        .          .          .                  .          .          .                  .                .                .           };
+
+--------------------------------------------------------------------------------
+-- Auto-annotated source: /home/cse/dual/cs5190421/COL380/a1/A1/classify.h
+--------------------------------------------------------------------------------
+Ir                     I1mr       ILmr       Dr                     D1mr           DLmr       Dw                 D1mw             DLmw             
+
+-- line 13 ----------------------------------------
+            .          .          .                      .              .          .                  .                .                .           Data classify(Data &D, const Ranges &R, unsigned int numt);
+            .          .          .                      .              .          .                  .                .                .           
+            .          .          .                      .              .          .                  .                .                .           class alignas(32) Counter
+            .          .          .                      .              .          .                  .                .                .           { // Aligned allocation per counter. Is that enough?
+            .          .          .                      .              .          .                  .                .                .             // Keeps per-thread subcount.
+            .          .          .                      .              .          .                  .                .                .           public:
+            .          .          .                      .              .          .                  .                .                .              Counter(unsigned int num = MAXTHREADS)
+            .          .          .                      .              .          .                  .                .                .              {
+        1,001 ( 0.00%) 1 ( 0.04%) 1 ( 0.04%)             0              0          0              1,001 ( 0.00%)       1 ( 0.00%)       1 ( 0.00%)        _numcount = num;
+        3,003 ( 0.00%) 0          0                      0              0          0              2,002 ( 0.00%)       0                0                 _counts = new unsigned int[num];
+            .          .          .                      .              .          .                  .                .                .                 assert(_counts != NULL);
+            .          .          .                      .              .          .                  .                .                .                 zero();
+            .          .          .                      .              .          .                  .                .                .              }
+            .          .          .                      .              .          .                  .                .                .           
+            .          .          .                      .              .          .                  .                .                .              void zero()
+            .          .          .                      .              .          .                  .                .                .              { // Initialize
+      135,135 ( 0.00%) 0          0                  1,001 ( 0.00%)     0          0                  0                0                0                 for (int i = 0; i < _numcount; i++)
+      128,128 ( 0.00%) 1 ( 0.04%) 1 ( 0.04%)             0              0          0             64,064 ( 0.09%)   3,176 ( 0.45%)   3,151 ( 0.98%)           _counts[i] = 0;
+            .          .          .                      .              .          .                  .                .                .              }
+            .          .          .                      .              .          .                  .                .                .           
+            .          .          .                      .              .          .                  .                .                .              void increase(unsigned int id)
+            .          .          .                      .              .          .                  .                .                .              { // If each sub-counter belongs to a thread mutual exclusion is not needed
+    2,018,144 ( 0.03%) 0          0              1,009,072 ( 0.08%)     0          0                  0                0                0                 assert(id < _numcount);
+    5,045,368 ( 0.09%) 0          0              1,009,072 ( 0.08%) 4,000 ( 0.31%) 0          1,009,072 ( 1.35%)       0                0                 _counts[id]++;
+            .          .          .                      .              .          .                  .                .                .              }
+            .          .          .                      .              .          .                  .                .                .           
+            .          .          .                      .              .          .                  .                .                .              void xincrease(unsigned int id)
+            .          .          .                      .              .          .                  .                .                .              { // Safe increment
+            .          .          .                      .              .          .                  .                .                .                 assert(id < _numcount);
+            .          .          .                      .              .          .                  .                .                .                 const std::lock_guard<std::mutex> lock(cmutex);
+            .          .          .                      .              .          .                  .                .                .                 _counts[id]++;
+            .          .          .                      .              .          .                  .                .                .              }
+            .          .          .                      .              .          .                  .                .                .           
+            .          .          .                      .              .          .                  .                .                .              unsigned int get(unsigned int id) const
+            .          .          .                      .              .          .                  .                .                .              { // return subcounter value for specific thread
+        8,008 ( 0.00%) 0          0                      0              0          0                  0                0                0                 assert(id < _numcount);
+        8,008 ( 0.00%) 0          0                  4,004 ( 0.00%) 1,001 ( 0.08%) 0                  0                0                0                 return _counts[id];
+            .          .          .                      .              .          .                  .                .                .              }
+            .          .          .                      .              .          .                  .                .                .           
+            .          .          .                      .              .          .                  .                .                .              void inspect()
+            .          .          .                      .              .          .                  .                .                .              {
+            .          .          .                      .              .          .                  .                .                .                 std::cout << "Subcounts -- ";
+            .          .          .                      .              .          .                  .                .                .                 for (int i = 0; i < _numcount; i++)
+            .          .          .                      .              .          .                  .                .                .                    std::cout << i << ":" << _counts[i] << " ";
+            .          .          .                      .              .          .                  .                .                .                 std::cout << "\n";
+-- line 57 ----------------------------------------
+-- line 69 ----------------------------------------
+            .          .          .                      .              .          .                  .                .                .              Range(int a = 1, int b = 0)
+            .          .          .                      .              .          .                  .                .                .              { // Constructor. Defaults to *bad* range
+            .          .          .                      .              .          .                  .                .                .                 lo = a;
+            .          .          .                      .              .          .                  .                .                .                 hi = b;
+            .          .          .                      .              .          .                  .                .                .              }
+            .          .          .                      .              .          .                  .                .                .           
+            .          .          .                      .              .          .                  .                .                .              bool within(int val) const
+            .          .          .                      .              .          .                  .                .                .              { // Return if val is within this range
+2,514,666,405 (43.39%) 0          0          1,005,866,562 (80.26%)   500 ( 0.04%) 0                  0                0                0                 return (lo <= val && val <= hi);
+            .          .          .                      .              .          .                  .                .                .              }
+            .          .          .                      .              .          .                  .                .                .           
+            .          .          .                      .              .          .                  .                .                .              bool strictlyin(int val) const
+            .          .          .                      .              .          .                  .                .                .              { // Return if val is strictly inside this range
+            .          .          .                      .              .          .                  .                .                .                 return (lo < val && val < hi);
+            .          .          .                      .              .          .                  .                .                .              }
+            .          .          .                      .              .          .                  .                .                .           
+            .          .          .                      .              .          .                  .                .                .              int lo;
+-- line 85 ----------------------------------------
+-- line 116 ----------------------------------------
+            .          .          .                      .              .          .                  .                .                .                 if (strict)
+            .          .          .                      .              .          .                  .                .                .                 {
+            .          .          .                      .              .          .                  .                .                .                    for (int r = 0; r < _num; r++) // Look through all intervals
+            .          .          .                      .              .          .                  .                .                .                       if (_ranges[r].strictlyin(val))
+            .          .          .                      .              .          .                  .                .                .                          return r;
+            .          .          .                      .              .          .                  .                .                .                 }
+            .          .          .                      .              .          .                  .                .                .                 else
+            .          .          .                      .              .          .                  .                .                .                 {
+2,009,714,984 (34.68%) 0          0                      4 ( 0.00%)     1 ( 0.00%) 0                  0                0                0                    for (int r = 0; r < _num; r++) // Look through all intervals
+  504,951,425 ( 8.71%) 0          0              1,009,072 ( 0.08%)     0          0                  0                0                0                       if (_ranges[r].within(val))
+            .          .          .                      .              .          .                  .                .                .                          return r;
+            .          .          .                      .              .          .                  .                .                .                 }
+            .          .          .                      .              .          .                  .                .                .                 return BADRANGE; // Did not find any range
+            .          .          .                      .              .          .                  .                .                .              }
+            .          .          .                      .              .          .                  .                .                .           
+            .          .          .                      .              .          .                  .                .                .              void inspect()
+            .          .          .                      .              .          .                  .                .                .              {
+            .          .          .                      .              .          .                  .                .                .                 for (int r = 0; r < _num; r++)
+-- line 133 ----------------------------------------
+-- line 155 ----------------------------------------
+            .          .          .                      .              .          .                  .                .                .              {                                                                           // Is the range r already in my list, or is it a new one?
+            .          .          .                      .              .          .                  .                .                .                 return (range(r.lo, true) == BADRANGE && range(r.hi, true) == BADRANGE); // Overlaps are not allowed.
+            .          .          .                      .              .          .                  .                .                .              }
+            .          .          .                      .              .          .                  .                .                .           };
+            .          .          .                      .              .          .                  .                .                .           
+            .          .          .                      .              .          .                  .                .                .           struct Data
+            .          .          .                      .              .          .                  .                .                .           {
+            .          .          .                      .              .          .                  .                .                .           
+    1,009,072 ( 0.02%) 0          0                      0              0          0          1,009,072 ( 1.35%) 126,134 (17.96%) 126,134 (39.15%)     struct Item
+            .          .          .                      .              .          .                  .                .                .              {
+            .          .          .                      .              .          .                  .                .                .                 int key;
+            .          .          .                      .              .          .                  .                .                .                 int value = -1;
+            .          .          .                      .              .          .                  .                .                .              };
+            .          .          .                      .              .          .                  .                .                .           
+            .          .          .                      .              .          .                  .                .                .              unsigned int ndata = 0;
+            .          .          .                      .              .          .                  .                .                .              Item *data = NULL;
+            .          .          .                      .              .          .                  .                .                .           
+            .          .          .                      .              .          .                  .                .                .              Data(int n)
+            1 ( 0.00%) 1 ( 0.04%) 1 ( 0.04%)             0              0          0                  1 ( 0.00%)       1 ( 0.00%)       0              { // n = Maximum number of items  storable
+            1 ( 0.00%) 0          0                      0              0          0                  1 ( 0.00%)       0                0                 ndata = n;
+    3,027,229 ( 0.05%) 1 ( 0.04%) 1 ( 0.04%)             0              0          0                  2 ( 0.00%)       1 ( 0.00%)       0                 data = new Item[n];
+            .          .          .                      .              .          .                  .                .                .                 assert(NULL != data);
+            .          .          .                      .              .          .                  .                .                .              }
+            .          .          .                      .              .          .                  .                .                .           
+            .          .          .                      .              .          .                  .                .                .              void reset()
+            .          .          .                      .              .          .                  .                .                .              {
+            .          .          .                      .              .          .                  .                .                .                 for (int i = 0; i < ndata; i++)
+            .          .          .                      .              .          .                  .                .                .                    data[i].value = -1;
+            .          .          .                      .              .          .                  .                .                .              }
+-- line 183 ----------------------------------------
+
+--------------------------------------------------------------------------------
+-- Auto-annotated source: /home/cse/dual/cs5190421/COL380/a1/A1/main_v1.cpp
+--------------------------------------------------------------------------------
+Ir                 I1mr       ILmr       Dr                 D1mr             DLmr       Dw                 D1mw       DLmw       
+
+        .          .          .                  .                .          .                  .          .          .           #include <unistd.h>
+        .          .          .                  .                .          .                  .          .          .           #include <iostream>
+        .          .          .                  .                .          .                  .          .          .           #include <fstream>
+        .          .          .                  .                .          .                  .          .          .           #include <chrono>
+        .          .          .                  .                .          .                  .          .          .           // #include "classify.h"
+        .          .          .                  .                .          .                  .          .          .           #include "classify_v1.h"
+        .          .          .                  .                .          .                  .          .          .           
+        .          .          .                  .                .          .                  .          .          .           float timedwork(Data &D, const Ranges &R, unsigned int numt)
+        8 ( 0.00%) 1 ( 0.04%) 0                  0                0          0                  5 ( 0.00%) 0          0           {
+        .          .          .                  .                .          .                  .          .          .              // starttimer();
+        2 ( 0.00%) 0          0                  0                0          0                  1 ( 0.00%) 0          0              auto begin = std::chrono::high_resolution_clock::now();
+        6 ( 0.00%) 0          0                  0                0          0                  1 ( 0.00%) 0          0              Data D2 = classify(D, R, numt);
+        2 ( 0.00%) 1 ( 0.04%) 1 ( 0.04%)         0                0          0                  1 ( 0.00%) 0          0              auto end = std::chrono::high_resolution_clock::now();
+        2 ( 0.00%) 0          0                  0                0          0                  0          0          0              int sorted = 0;
+2,018,150 ( 0.03%) 0          0                  0                0          0                  0          0          0              for (int i = 1; i < D2.ndata; i++)
+        .          .          .                  .                .          .                  .          .          .              {
+        .          .          .                  .                .          .                  .          .          .                 if (D2.data[i - 1].value > D2.data[i].value)
+6,054,426 ( 0.10%) 0          0          2,018,142 ( 0.16%) 126,135 ( 9.71%) 0                  0          0          0                    sorted++;
+        .          .          .                  .                .          .                  .          .          .              }
+        .          .          .                  .                .          .                  .          .          .              std::cout << "Is sorted? " << std::boolalpha << (sorted == 0) << std::endl;
+        .          .          .                  .                .          .                  .          .          .           
+        .          .          .                  .                .          .                  .          .          .              auto elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
+        .          .          .                  .                .          .                  .          .          .              // return(1e-6 * elapsed.count());
+        4 ( 0.00%) 1 ( 0.04%) 1 ( 0.04%)         1 ( 0.00%)       1 ( 0.00%) 0                  0          0          0              return (1e-6 * (std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin)).count());
+        .          .          .                  .                .          .                  .          .          .              // return mssince();
+        6 ( 0.00%) 0          0                  6 ( 0.00%)       0          0                  0          0          0           }
+        .          .          .                  .                .          .                  .          .          .           
+        .          .          .                  .                .          .                  .          .          .           void repeatrun(unsigned int reps, Data &D, const Ranges &R, unsigned int numt)
+       10 ( 0.00%) 1 ( 0.04%) 1 ( 0.04%)         0                0          0                  5 ( 0.00%) 0          0           { // Repeat the same experiment. Time each rep. D, R, and numt remain fixed.
+        .          .          .                  .                .          .                  .          .          .              int it;
+        5 ( 0.00%) 0          0                  1 ( 0.00%)       1 ( 0.00%) 1 ( 0.01%)         2 ( 0.00%) 0          0              float ms, tms = 0, minms = 1e7;
+        6 ( 0.00%) 0          0                  0                0          0                  0          0          0              for (it = 0; it < reps; it++)
+        .          .          .                  .                .          .                  .          .          .              {
+        8 ( 0.00%) 1 ( 0.04%) 1 ( 0.04%)         1 ( 0.00%)       1 ( 0.00%) 0                  2 ( 0.00%) 0          0                 tms += ms = timedwork(D, R, numt); // This is the real work
+        .          .          .                  .                .          .                  .          .          .                 std::cout << ms << " ms\n";
+        2 ( 0.00%) 0          0                  0                0          0                  1 ( 0.00%) 0          0                 usleep(1000); // Lose control for 1 ms
+        .          .          .                  .                .          .                  .          .          .                 if (ms < minms)
+        3 ( 0.00%) 0          0                  2 ( 0.00%)       0          0                  1 ( 0.00%) 0          0                    minms = ms;
+        1 ( 0.00%) 0          0                  1 ( 0.00%)       1 ( 0.00%) 0                  0          0          0                 D.reset();
+        .          .          .                  .                .          .                  .          .          .              }
+        .          .          .                  .                .          .                  .          .          .              std::cout << reps << " iterations of " << D.ndata << " items in "
+        4 ( 0.00%) 0          0                  1 ( 0.00%)       0          0                  1 ( 0.00%) 0          0                        << R.num() << " ranges with " << numt << " threads: Fastest took "
+        4 ( 0.00%) 0          0                  1 ( 0.00%)       0          0                  0          0          0                        << minms << " ms, Average was " << tms / reps << " ms\n";
+        6 ( 0.00%) 1 ( 0.04%) 0                  5 ( 0.00%)       0          0                  0          0          0           }
+        .          .          .                  .                .          .                  .          .          .           
+        .          .          .                  .                .          .                  .          .          .           Ranges readRanges(const char *filename)
+        8 ( 0.00%) 1 ( 0.04%) 1 ( 0.04%)         0                0          0                  6 ( 0.00%) 0          0           {
+        .          .          .                  .                .          .                  .          .          .              Ranges R;
+        .          .          .                  .                .          .                  .          .          .              std::fstream fs(filename, std::fstream::in);
+        .          .          .                  .                .          .                  .          .          .           
+        .          .          .                  .                .          .                  .          .          .              int lo, hi;
+  510,509 ( 0.01%) 0          0              2,002 ( 0.00%)       0          0              2,002 ( 0.00%) 0          0              while (fs >> lo >> hi)
+    5,000 ( 0.00%) 0          0              2,000 ( 0.00%)       0          0                  0          0          0                 R += Range(lo, hi);
+        .          .          .                  .                .          .                  .          .          .              fs.close();
+        .          .          .                  .                .          .                  .          .          .           
+        1 ( 0.00%) 0          0                  0                0          0                  0          0          0              return R;
+       10 ( 0.00%) 0          0                  7 ( 0.00%)       1 ( 0.00%) 0                  0          0          0           }
+        .          .          .                  .                .          .                  .          .          .           
+        .          .          .                  .                .          .                  .          .          .           Data readData(const char *filename, unsigned int nItems)
+        8 ( 0.00%) 2 ( 0.07%) 2 ( 0.09%)         0                0          0                  6 ( 0.00%) 0          0           {
+        2 ( 0.00%) 0          0                  0                0          0                  0          0          0              assert(nItems > 0);
+        .          .          .                  .                .          .                  .          .          .              Data D(nItems);
+        .          .          .                  .                .          .                  .          .          .              std::fstream fs(filename, std::fstream::in);
+        .          .          .                  .                .          .                  .          .          .              int d = 0;
+8,072,576 ( 0.14%) 0          0          2,018,144 ( 0.16%)       0          0          1,009,072 ( 1.35%) 0          0              while (fs >> D.data[d++].key)
+3,027,216 ( 0.05%) 0          0                  0                0          0                  0          0          0                 if (d == nItems)
+        .          .          .                  .                .          .                  .          .          .                    break;
+        .          .          .                  .                .          .                  .          .          .              if (d < nItems)
+        2 ( 0.00%) 1 ( 0.04%) 1 ( 0.04%)         0                0          0                  0          0          0                 D.ndata = d - 1;
+        .          .          .                  .                .          .                  .          .          .              fs.close();
+        .          .          .                  .                .          .                  .          .          .              return D;
+       10 ( 0.00%) 0          0                  7 ( 0.00%)       1 ( 0.00%) 0                  0          0          0           }
+        .          .          .                  .                .          .                  .          .          .           
+        .          .          .                  .                .          .                  .          .          .           int main(int argc, char *argv[])
+        4 ( 0.00%) 1 ( 0.04%) 1 ( 0.04%)         0                0          0                  3 ( 0.00%) 0          0           {
+        3 ( 0.00%) 0          0                  0                0          0                  0          0          0              assert(argc > 4); // <rangefile> <datafile> <max data to read> <number of threads to use>
+        6 ( 0.00%) 1 ( 0.04%) 1 ( 0.04%)         1 ( 0.00%)       1 ( 0.00%) 0                  3 ( 0.00%) 1 ( 0.00%) 0              Ranges R = readRanges(argv[1]);
+        4 ( 0.00%) 0          0                  1 ( 0.00%)       0          0                  3 ( 0.00%) 1 ( 0.00%) 0              Data D = readData(argv[2], atoi(argv[3]));
+        .          .          .                  .                .          .                  .          .          .           
+        .          .          .                  .                .          .                  .          .          .              int reps = 6;  // 6 reps by default
+        2 ( 0.00%) 0          0                  0                0          0                  0          0          0              if (argc == 6) // If there is a reps arg, use it
+        .          .          .                  .                .          .                  .          .          .                 reps = atoi(argv[5]);
+        .          .          .                  .                .          .                  .          .          .           
+        4 ( 0.00%) 0          0                  0                0          0                  1 ( 0.00%) 0          0              repeatrun(reps, D, R, atoi(argv[4])); // repeat reps times
+        .          .          .                  .                .          .                  .          .          .              return 0;
+        8 ( 0.00%) 3 ( 0.11%) 1 ( 0.04%)         4 ( 0.00%)       0          0                  0          0          0           }
+
+--------------------------------------------------------------------------------
+The following files chosen for auto-annotation could not be found:
+--------------------------------------------------------------------------------
+  /home/cc/vfaculty/omj.vfaculty/IITD/centOS7/GCC/gcc-9.1.0/x86_64-pc-linux-gnu/libstdc++-v3/include/bits/basic_string.h
+  /home/cc/vfaculty/omj.vfaculty/IITD/centOS7/GCC/gcc-9.1.0/x86_64-pc-linux-gnu/libstdc++-v3/include/bits/char_traits.h
+  /home/cc/vfaculty/omj.vfaculty/IITD/centOS7/GCC/gcc-9.1.0/x86_64-pc-linux-gnu/libstdc++-v3/include/bits/istream.tcc
+  /home/cc/vfaculty/omj.vfaculty/IITD/centOS7/GCC/gcc-9.1.0/x86_64-pc-linux-gnu/libstdc++-v3/include/bits/locale_facets.h
+  /home/cc/vfaculty/omj.vfaculty/IITD/centOS7/GCC/gcc-9.1.0/x86_64-pc-linux-gnu/libstdc++-v3/include/bits/locale_facets.tcc
+  /home/cc/vfaculty/omj.vfaculty/IITD/centOS7/GCC/gcc-9.1.0/x86_64-pc-linux-gnu/libstdc++-v3/include/bits/streambuf_iterator.h
+  /home/cc/vfaculty/omj.vfaculty/IITD/centOS7/GCC/gcc-9.1.0/x86_64-pc-linux-gnu/libstdc++-v3/include/streambuf
+
+--------------------------------------------------------------------------------
+Ir                     I1mr        ILmr        Dr                     D1mr               DLmr       Dw                 D1mw             DLmw             
+--------------------------------------------------------------------------------
+5,114,823,212 (88.26%) 40 ( 1.47%) 36 ( 1.55%) 1,026,041,972 (81.87%) 1,271,747 (97.92%) 1 ( 0.01%) 9,141,710 (12.25%) 569,676 (81.13%) 317,360 (98.50%)  events annotated
+

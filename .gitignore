@@ -1,0 +1,8 @@
+valgrind
+*.bz2
+*.zip
+*.gz
+*.data
+*.bin
+*.txt
+*.dat
