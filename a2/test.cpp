@@ -50,34 +50,53 @@ struct Graph
             std::cout << std::endl;
         }
     }
-    void randomWalk(int node, Randomizer r)
+    void randomWalk(int node, Randomizer &r)
     {
-        int next_node = node;
-        for (int walk = 0; walk < num_walk; walk++)
-            for (int step = 0; step < num_steps; step++)
+        // if (edges[node].size() == 0)
+        // {
+        //     return;
+        // }
+        for (auto adjnode : edges[node])
+        {
+            int curr_node = adjnode;
+            if (edges[curr_node].size() == 0)
+                    {
+                        curr_node = adjnode;
+                        continue;
+                    }
+            for (int walk = 0; walk < num_walk; walk++)
             {
-                // std::cout << "n\n";
-                int rand_num = r.get_random_value(node);
-                // std::cout << "rand_num: " << rand_num << "\n";
-                if (rand_num == -1 or edges[next_node].size() == 0)
+                for (int step = 0; step < num_steps; step++)
                 {
-                    next_node = node;
-                    continue;
-                }
-                else
-                {
-                    // std::cout << "m\n";
-                    // std::cout << "rand_num: " << rand_num << " edges[next_node].size(): " << edges[next_node].size() << "\n";
-                    rand_num = (int)(rand_num % edges[next_node].size());
-                    // std::cout << "rand_num: " << rand_num << "\n";
-                    // std::cout << "edge 7: " << edges[next_node][7] << " \n";
-                    // std::cout << "0th: " << edges[next_node][0] << " 1st: " << edges[next_node][1] << " 2nd: " << edges[next_node][2] << " 3rd: " << edges[next_node][3] << " 4th: " << edges[next_node][4] << "\n";
-                    next_node = edges[next_node][rand_num];
-                    // std::cout << "next_node: " << next_node << " node: " << node << " influence_countert[next_node][node].second: " << influence_countert[next_node][node].second << "\n";
-                    influence_countert[node][next_node].second++;
-                    // std::cout << "f" << std::endl;
+                    // std::cout << "n\n";
+                    if (edges[curr_node].size() == 0)
+                    {
+                        curr_node = adjnode;
+                        continue;
+                    }
+                    int rand_num = r.get_random_value(node);
+                    std::cout << "rand_num: " << rand_num << "\n";
+                    if (rand_num == -1)
+                    {
+                        curr_node = adjnode;
+                        continue;
+                    }
+                    else
+                    {
+                        rand_num = (int)(rand_num % edges[curr_node].size());
+                        curr_node = edges[curr_node][rand_num];
+                        influence_countert[node][curr_node].second++;
+                    }
                 }
             }
+        }
+        for (auto adjedge : edges[node])
+        {
+            influence_countert[node][adjedge].second = 0;
+        }
+        influence_countert[node][node].second = 0;
+        std::sort(influence_countert[node].begin(), influence_countert[node].end(), [](const std::pair<int, int> &a, const std::pair<int, int> &b)
+                  { if(a.second==b.second) return a.first<b.first; else return a.second>b.second; });
     }
     void find_circle()
     {
@@ -93,8 +112,6 @@ struct Graph
 
         for (int i = 0; i < num_nodes; i++)
         {
-            std::sort(influence_countert[i].begin(), influence_countert[i].end(), [](const std::pair<int, int> &a, const std::pair<int, int> &b)
-                      { return a.second > b.second; });
         }
         // for each node, select top num_rec nodes as circle
         circle = new std::vector<int>[num_nodes];
@@ -203,10 +220,18 @@ int main(int argc, char *argv[])
     // g.printEdges();
 
     // for all elements call this function
+    int start_thread = rank * num_nodes / size;
+    int end_thread = (rank + 1) * num_nodes / size;
+    // for (int i = start_thread; i < end_thread; i++)
+    // {
+    //     // std::cout << "Node " << i << "\n";
+    //     g.randomWalk(i, random_generator);
+    // }
     for (int i = 0; i < num_nodes; i++)
     {
-        // std::cout << "Node " << i << "\n";
+        if(i==10)break;
         g.randomWalk(i, random_generator);
+        // std::cout << i << "\n";
     }
     std::cout << "Graph random walk done" << std::endl;
     g.find_circle();
