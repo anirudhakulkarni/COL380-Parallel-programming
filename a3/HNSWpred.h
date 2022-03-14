@@ -4,6 +4,11 @@
 #include <queue>
 #include <mpi.h>
 using namespace std;
+
+void debug(int a , int b)
+{
+    std::cout << "#" << a << ' ' << b << std::endl;
+}
 class myComparator
 {
 public:
@@ -26,13 +31,17 @@ double cosine_dist(double *A, double *B, int &len)
     // std::cout<<"Cosine: "<<1.0-dot / (sqrt(den_a)*sqrt(den_b))<<std::endl;
     return 1.0-dot / (sqrt(den_a)*sqrt(den_b));
 }
-void SearchLayer(double *q,int k, bool visited[], pq &cand, pq top_k,int curr_lvl, Graph *G){
+void SearchLayer(double *q,int k,int i, bool visited[], pq &cand, pq top_k,int curr_lvl, Graph *G){
     while(cand.size() > 0)
     {
         pair<int, double> top_el = cand.top(); cand.pop();
         int start = G->indptr[top_el.first] + G->level_offset[curr_lvl];
         int end = G->indptr[top_el.first] + G->level_offset[curr_lvl+1];
-        for(int node = G->index[start]; node < G->index[end]; node++){
+        std::cout << "i###: " << curr_lvl << ' ' << start << ' ' << end << ' ' << G->level_offset[curr_lvl] << ' ' << G->level_offset[curr_lvl+1] << std::endl;
+        // debug(start, end);
+        for(int e = start; e < end; e++){
+            int node = G->index[e];
+            debug(i, node);
             if (node < 0 || visited[node]){
                 continue;
             }
@@ -55,18 +64,16 @@ void SearchLayer(double *q,int k, bool visited[], pq &cand, pq top_k,int curr_lv
     }
     cand = top_k;
 }
-void QueryHNSW(double *q,int k, pq &top_k, Graph *G, int num_threads)
+void QueryHNSW(double *q,int i,int k, pq &top_k, Graph *G, int num_threads)
 {   
-    // cout << cosine_dist(G->vect[0], G->vect[1], G->D) << std::endl;
-    // cout << cosine_dist(G->vect[1], G->vect[2], G->D) << std::endl;
-    // cout << cosine_dist(G->vect[2], G->vect[0], G->D) << std::endl;
-    // return;
     bool visited[G->L];
     memset(visited, false, G->L);
     visited[G->ep] = true;
     top_k.push(make_pair(G->ep, cosine_dist(q, G->vect[G->ep], G->D)));
+    debug(i, G->ep);
     for(int curr_lvl = G->max_level-1; curr_lvl >= 0; curr_lvl--){
-        SearchLayer(q,k, visited, top_k, top_k, curr_lvl, G);
+        debug(-1,-1);
+        SearchLayer(q,k,i, visited, top_k, top_k, curr_lvl, G);
     }
     return;
 }
