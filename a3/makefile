@@ -1,2 +1,11 @@
+CC= mpic++ -fopenmp -pg
+CFLAGS=-std=c++11
+
+compile:
+	$(CC) $(CFLAGS) main.cpp -o main
+run:
+	mpirun -np 1 ./main 5 ./anz_dd/ 1
+clean:
+	rm main
 all:
-	g++ main.cpp -o main && ./main
+	$(CC) $(CFLAGS) main.cpp -o main && ./main 5
