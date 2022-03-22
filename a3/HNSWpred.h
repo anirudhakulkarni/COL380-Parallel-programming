@@ -24,16 +24,16 @@ public:
 
 double cosine_dist(double *A, double *B, int &len)
 {
-    std::cout<<"before\n";
+    // std::cout<<"before\n";
     double dot = 0.0, den_a = 0.0, den_b = 0.0;
     for(int i = 0; i < len; i++){
-        std::cout<<i<<"\n";
-        std::cout<<i<<" "<<A[i]<<" "<<B[i]<<"\n";
+        // std::cout<<i<<"\n";
+        // std::cout<<i<<" "<<A[i]<<" "<<B[i]<<"\n";
         dot+=A[i]*B[i];
         den_a+= A[i]*A[i];den_b+= B[i]*B[i];
     }
     // std::cout<<"Cosine: "<<1.0-dot / (sqrt(den_a)*sqrt(den_b))<<std::endl;
-    std::cout<<"after\n";
+    // std::cout<<"after\n";
     return 1.0-dot / (sqrt(den_a)*sqrt(den_b));
 }
 void printVisited(bool visited[]){
@@ -77,7 +77,7 @@ void SearchLayer(double *q,int k,int i, bool visited[], pq &cand, pq top_k,int c
         // debug(start, end);
         // printVisited(visited);
 
-        for(int e = start; e <= end; e++){
+        for(int e = start; e < end; e++){
             int node = G->index[e];
             // debug(i, node);
             if (node < 0 || visited[node]){
