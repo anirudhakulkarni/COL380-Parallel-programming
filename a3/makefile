@@ -1,4 +1,4 @@
-CC= mpic++ -fopenmp -pg
+CC= mpic++ -fopenmp 
 CFLAGS=-std=c++11
 
 compile:

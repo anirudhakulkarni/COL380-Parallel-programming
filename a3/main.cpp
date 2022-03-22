@@ -14,6 +14,7 @@ level_offset: max_level-dimensional array of offsets
 vect: LxD-dimension: represents embedding of each news item
 user: UxD-dimensional array of user features
 */
+using namespace std::chrono;
 int main(int argc, char** argv)
 {
     if(MPI_Init(NULL, NULL) != MPI_SUCCESS)
@@ -22,23 +23,28 @@ int main(int argc, char** argv)
     }
     int rank, size;
     int k = std::stoi(argv[1]);
+    std::cout<<k<<"...........\n";
     std::string inputDir = argv[2];
     int num_threads = std::stoi(argv[3]);
+    auto start=high_resolution_clock::now();
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     MPI_Comm_size(MPI_COMM_WORLD, &size);
     Graph *G = new Graph;
     G->getinputs(inputDir);
     int batch_size = G->U / size + (G->U % size != 0);
     int n_threads=5;
+    
     // #pragma omp parallel for num_threads(n_threads)
-    for(int i = rank*batch_size; i < std::min((rank+1)*batch_size, G->U); i++){
+    // for(int i = rank*batch_size; i < std::min((rank+1)*batch_size, G->U); i++){
+    // for(int i = 2; i < 3; i++){
+        for(int i = 0; i < G->U; i++){
         pq hola;
         QueryHNSW(G->user[i],i,k,hola,G, num_threads);
         // print priority queue
 
         //COmment afterwards
-        #pragma omp critical
-        {
+        // #pragma omp critical
+        // {
             std::cout<<"i: "<<i<<": ";
             int j = 0;
             while(!hola.empty() && j++ < k){
@@ -47,11 +53,14 @@ int main(int argc, char** argv)
                 std::cout<<a.first<<"->"<<a.second<<",";
             }
             std::cout << std::endl;
-        }
+        // }
     }
 
-    // G->printinputs();
+    G->printinputs();
     MPI_Finalize();
+    auto stop=high_resolution_clock::now();
+    auto duration = duration_cast<microseconds>(stop - start);
+    std::cout<<duration.count()/1000000.0<<" seconds" <<std::endl;
     return 0;
 }
 //setfacl -m u:cs5190421:rwx *
