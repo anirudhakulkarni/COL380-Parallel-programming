@@ -9,7 +9,7 @@ class Graph{
     public:
     int max_level, ep, L = 6, U = 5, D = 5;
     int *level, *index, *indptr, *level_offset;
-    double **vect, **user;
+    float **vect, **user;
 
     int get_num_lines(std::string filename)
     {
@@ -64,10 +64,10 @@ class Graph{
         }
         file.close();
 
-        vect = new double *[L];
+        vect = new float *[L];
         for (int i = 0; i < L; i++)
         {
-            vect[i] = new double[D];
+            vect[i] = new float[D];
         }
         std::cout<<"Reading vect.txt"<<std::endl;
         filename = inputDir + "vect.txt";
@@ -113,10 +113,10 @@ class Graph{
         }
         file.close();
 
-        user = new double *[U];
+        user = new float *[U];
         for (int i = 0; i < U; i++)
         {
-            user[i] = new double[D];
+            user[i] = new float[D];
         }
         filename = "user.txt";
         file.open(filename.c_str());
@@ -166,10 +166,10 @@ class Graph{
         }
         file.close();
 
-        vect = new double *[L];
+        vect = new float *[L];
         for (int i = 0; i < L; i++)
         {
-            vect[i] = new double[D];
+            vect[i] = new float[D];
         }
         std::cout<<"Reading vect.txt"<<std::endl;
         filename = inputDir + "vect.txt";
@@ -212,10 +212,10 @@ class Graph{
         }
         file.close();
 
-        user = new double *[U];
+        user = new float *[U];
         for (int i = 0; i < U; i++)
         {
-            user[i] = new double[D];
+            user[i] = new float[D];
         }
         filename = inputDir + "user.txt";
         file.open(filename.c_str());

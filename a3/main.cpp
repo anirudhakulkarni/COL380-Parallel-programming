@@ -33,31 +33,39 @@ int main(int argc, char** argv)
     G->getinputs(inputDir);
     int batch_size = G->U / size + (G->U % size != 0);
     int n_threads=5;
-    
-    // #pragma omp parallel for num_threads(n_threads)
-    // for(int i = rank*batch_size; i < std::min((rank+1)*batch_size, G->U); i++){
+    int *ansoutput=new int[G->U];
+#pragma omp parallel num_threads(10)
+#pragma omp single
+{    // #pragma omp parallel for num_threads(n_threads)
+    for(int i = rank*batch_size; i < std::min((rank+1)*batch_size, G->U); i++){
     // for(int i = 2; i < 3; i++){
-        for(int i = 0; i < G->U; i++){
+        // for(int i = 0; i < G->U; i++){
+
+#pragma omp task 
+{
         pq hola;
-        std::cout<<"User: "<<i<<"\n";
-        QueryHNSW(G->user[i],i,k,hola,G, num_threads);
+        // std::cout<<"User: "<<i<<"\n";
+        QueryHNSW(G->user[i],i,k,hola,G, num_threads,ansoutput);
         // print priority queue
 
         //COmment afterwards
         // #pragma omp critical
         // {
-            std::cout<<"i: "<<i<<": ";
+
+            // std::cout<<"i: "<<i<<": ";
             int j = 0;
             while(!hola.empty() && j++ < k){
-                std::pair<int,double> a=hola.top();
+                std::pair<int,float> a=hola.top();
                 hola.pop();
-                std::cout<<a.first<<"->"<<a.second<<",";
+                // std::cout<<a.first<<"->"<<a.second<<",";
             }
-            std::cout << std::endl;
+            // std::cout << std::endl;
         // }
+}
     }
+#pragma omp taskwait
 
-    G->printinputs();
+}    // G->printinputs();
     MPI_Finalize();
     auto stop=high_resolution_clock::now();
     auto duration = duration_cast<microseconds>(stop - start);

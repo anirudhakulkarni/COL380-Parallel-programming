@@ -12,20 +12,20 @@ void debug(int a , int b)
 class myComparator
 {
 public:
-    int operator() (const pair<int, double>& p1, const pair<int, double>& p2)
+    int operator() (const pair<int, float>& p1, const pair<int, float>& p2)
     {
         // min heap. Min value stays at top >
         return p1.second > p2.second;
     }
 };
 
-#define pq priority_queue<pair<int, double>, vector<pair<int, double>>, myComparator>
-// #define pq priority_queue<pair<int, double>, vector<pair<int, double>>>//, greater<pair<int, double>>>
+#define pq priority_queue<pair<int, float>, vector<pair<int, float>>, myComparator>
+// #define pq priority_queue<pair<int, float>, vector<pair<int, float>>>//, greater<pair<int, float>>>
 
-double cosine_dist(double *A, double *B, int &len)
+float cosine_dist(float *A, float *B, int &len)
 {
     // std::cout<<"before\n";
-    double dot = 0.0, den_a = 0.0, den_b = 0.0;
+    float dot = 0.0, den_a = 0.0, den_b = 0.0;
     for(int i = 0; i < len; i++){
         // std::cout<<i<<"\n";
         // std::cout<<i<<" "<<A[i]<<" "<<B[i]<<"\n";
@@ -45,33 +45,33 @@ void printVisited(bool visited[]){
 void printQueue(pq hola){
     int j = 0;
     while(!hola.empty() && j++ < 5){
-        std::pair<int,double> a=hola.top();
+        std::pair<int,float> a=hola.top();
         hola.pop();
         std::cout<<a.first<<"->"<<a.second<<",";
     }
 
 }
 int getMaxInPQ(pq f) {
-    double max = -1.0;
-    std::cout<<"finding max: \n";
+    float max = -1.0;
+    // std::cout<<"finding max: \n";
     while (!f.empty()) {
-        double val = f.top().second;
-        std::cout<<val<<" ";
+        float val = f.top().second;
+        // std::cout<<val<<" ";
         if (val > max) {
             max = val;
         }
         f.pop();
     }
-    std::cout<<"\n found max = "<<max<<"\n";
+    // std::cout<<"\n found max = "<<max<<"\n";
     return max;
 }
 
-void SearchLayer(double *q,int k,int i, bool visited[], pq &cand, pq top_k,int curr_lvl, Graph *G){
-    double max_so_far = -1.0;
+void SearchLayer(float *q,int k,int i, bool visited[], pq &cand, pq top_k,int curr_lvl, Graph *G){
+    float max_so_far = -1.0;
     while(cand.size() > 0)
     {
-        pair<int, double> top_el = cand.top(); cand.pop();
-        std::cout<<"top_el: "<<top_el.first<<" "<<top_el.second<<" current_lvl: "<<curr_lvl<<" \n";
+        pair<int, float> top_el = cand.top(); cand.pop();
+        // std::cout<<"top_el: "<<top_el.first<<" "<<top_el.second<<" current_lvl: "<<curr_lvl<<" \n";
         int start = G->indptr[top_el.first] + G->level_offset[curr_lvl];
         int end = G->indptr[top_el.first] + G->level_offset[curr_lvl+1];
         // debug(start, end);
@@ -84,11 +84,11 @@ void SearchLayer(double *q,int k,int i, bool visited[], pq &cand, pq top_k,int c
                 continue;
             }
             visited[node] = true;
-            std::cout<<e<<" =e\n";
-            std::cout<<node<<" = Node\n";
-            double curr_dist = cosine_dist(q, G->vect[node], G->D);
+            // std::cout<<e<<" =e\n";
+            // std::cout<<node<<" = Node\n";
+            float curr_dist = cosine_dist(q, G->vect[node], G->D);
             // DEBUG: its cand.max and cand is min heap 
-            std::cout<<cand.size()<<"..........................\n";
+            // std::cout<<cand.size()<<"..........................\n";
             // if (cand.size()>=k && curr_dist > cand.top().second){
             //     continue;
             // }
@@ -118,7 +118,7 @@ void SearchLayer(double *q,int k,int i, bool visited[], pq &cand, pq top_k,int c
     }
     cand = top_k;
 }
-void QueryHNSW(double *q,int i,int k, pq &top_k, Graph *G, int num_threads)
+void QueryHNSW(float *q,int i,int k, pq &top_k, Graph *G, int num_threads,int *ansoutput)
 {   
     bool visited[G->L];
     memset(visited, false, G->L);
