@@ -15,7 +15,7 @@ public:
     int operator() (const pair<int, float>& p1, const pair<int, float>& p2)
     {
         // min heap. Min value stays at top >
-        return p1.second > p2.second;
+        return p1.second < p2.second;
     }
 };
 
@@ -92,24 +92,26 @@ void SearchLayer(float *q,int k,int i, bool visited[], pq &cand, pq top_k,int cu
             // if (cand.size()>=k && curr_dist > cand.top().second){
             //     continue;
             // }
-            if (cand.size()>=k && curr_dist>getMaxInPQ(cand) ){
+            if (cand.size()>=k && curr_dist>cand.top().second )
+            {
                 continue;
             }
             // if (curr_dist > max_so_far && max_so_far > -0.5 && cand.size()>=k)continue;
             top_k.push(make_pair(node, curr_dist));
-            max_so_far = max(curr_dist, max_so_far);
+            // max_so_far = max(curr_dist, max_so_far);
             //
-            pq tmp;
-            while(!top_k.empty()){
-                if(tmp.size() < k) {
-                    tmp.push({top_k.top().first, top_k.top().second});
-                    // max_so_far = max(max_so_far, top_k.top().second);
-                }
-                top_k.pop();
-            }
+            // pq tmp;
+            // while(!top_k.empty()){
+            //     if(tmp.size() < k) {
+            //         tmp.push({top_k.top().first, top_k.top().second});
+            //         // max_so_far = max(max_so_far, top_k.top().second);
+            //     }
+            //     top_k.pop();
+            // }
+            while(top_k.size() > k)top_k.pop();
             // std::cout<<"Before"<<std::endl;
             // printQueue(top_k);
-            top_k = tmp;
+            // top_k = tmp;
             // printQueue(top_k);
 
             //
@@ -145,3 +147,8 @@ void QueryHNSW(float *q,int i,int k, pq &top_k, Graph *G, int num_threads,int **
 
      return;
 }
+
+
+
+
+

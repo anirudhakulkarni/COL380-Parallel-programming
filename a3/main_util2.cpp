@@ -14,6 +14,21 @@ level_offset: max_level-dimensional array of offsets
 vect: LxD-dimension: represents embedding of each news item
 user: UxD-dimensional array of user features
 */
+
+std::fstream& GotoLine(std::fstream& file, int num){
+
+if (num== 0)return file;
+    file.seekg(std::ios::beg);
+    // deb(-1);
+    string garbage;
+    for(int i=0; i < num ; ++i){
+        // deb(-2);
+        // file.ignore(std::numeric_limits<std::streamsize>::max(),'\n');
+        std::getline(file, garbage);
+    }
+    return file;
+}
+
 using namespace std::chrono;
 int main(int argc, char **argv)
 {
@@ -32,19 +47,48 @@ int main(int argc, char **argv)
     MPI_Comm_size(MPI_COMM_WORLD, &size);
     Graph *G = new Graph;
     G->getinputs(inputDir);
-    int batch_size = G->U / size + (G->U % size != 0);
+    int batch_size = G->U / size + (rank < G->U % size);
+        int off = 0;
+        if (rank < G->U % size)off+= rank*(G->U / size+1);
+        else off+= (G->U % size)*(G->U / size+1) + (rank-G->U % size)*(G->U / size);
     // int n_threads = 5;
     int **ansoutput = new int *[G->U];
+
+    fstream fileu;
+    string filename = "user.txt";
+    fileu.open(filename.c_str());
+    GotoLine(fileu, off);
+
+    float **user_curr;
+    // std::cout << "haha" <<batch_size << ' ' << off << std::endl;
+        // return 0;
+    user_curr = new float *[batch_size];
+    // std::cout << "G->u3" << G->U << std::endl;
+    for(int i = off; i < off+batch_size; i++)
+    {
+        // std::cout << i << std::endl;
+        user_curr[i-off] = new float[G->D];
+        for(int j = 0; j < G->D; j++)
+        fileu >> user_curr[i-off][j];
+    }
+
+
+
 #pragma omp parallel num_threads(num_threads)
 #pragma omp single
     { // #pragma omp parallel for num_threads(n_threads)
-        for (int i = rank * batch_size; i < std::min((rank + 1) * batch_size, G->U); i++)
+        for(int i = off; i < off+batch_size; i++)
         {
 #pragma omp task shared(ansoutput)
             {
                 pq hola;
-                std::cout<<"User: "<<i<<"\n";
-                QueryHNSW(G->user[i], i, k, hola, G, num_threads, ansoutput);
+                #pragma omp critical
+                {
+                    std::cout<<"\nUser: "<<i<<"\n";
+                    for(int y = 0; y < G->D; y++)std::cout << user_curr[i-off][y] << "|";
+                    std::cout << std::endl;
+                }
+                QueryHNSW(user_curr[i-off],i,k,hola,G, num_threads,ansoutput);
             }
         }
 #pragma omp taskwait
@@ -55,7 +99,8 @@ int main(int argc, char **argv)
         file_out.open(filename, std::ios_base::out);
     
 
-        for (int i = rank * batch_size; i < std::min((rank + 1) * batch_size, G->U); i++){
+        for(int i = off; i < off+batch_size; i++){
+// std::cout << ansoutput[ii][0];
             for (int j = 0; j < ansoutput[i][0]; j++)
             {
                 file_out << ansoutput[i][j + 1] << " ";
@@ -63,54 +108,8 @@ int main(int argc, char **argv)
             file_out<< "\n";
         }
     }
-    // int **ansoutput_master ;
-    // if(rank == 0){
-    //     std::cout<<"Master thread: assigning\n";
-    //     ansoutput_master = new int *[G->U];
-    //     for (int i = 0; i < G->U; i++)
-    //     {
-    //         ansoutput_master[i] = new int[k + 1];
-    //         for (int j = 0; j < k + 1; j++)
-    //         {
-    //             ansoutput_master[i][j] = ansoutput[i][j];
-    //         }
-    //     }
-    //     std::cout<<"Gathering:\n";
-    // }
-    // MPI_Gather(ansoutput, batch_size * (k + 1), MPI_INT, ansoutput_master, batch_size * (k + 1), MPI_INT, 0, MPI_COMM_WORLD);
-    // if(rank == 0){
-    //     std::ofstream output;
-    //     output.open("output.txt");
-    //     for (int i = 0; i < G->U; i++)
-    //     {
-    //         for (int j = 0; j < k + 1; j++)
-    //         {
-    //             output << ansoutput_master[i][j] << " ";
-    //         }
-    //         output << "\n";
-    //     }
-    //     output.close();
-    // }
-    
 
     MPI_Finalize();
-        // string filename("tmp.txt");
-        // fstream file_out;fdad
-        
-        // file_out.open(filename, std::ios_base::out);
-    
-        // std::cout << "Printing final ans: " << G->U << "\n";
-        // for (int ii = 0; ii < G->U; ii++)
-        // {
-        //     // std::cout << ansoutput[ii][0];
-        //     for (int j = 0; j < ansoutput[ii][0]; j++)
-        //     {
-        //         file_out << ansoutput[ii][j + 1] << " ";
-
-        //     }
-        //     file_out<< "\n";
-        // }
-        // file_out.close();
     auto stop = high_resolution_clock::now();
     auto duration = duration_cast<microseconds>(stop - start);
     std::cout << duration.count() / 1000000.0 << " seconds" << std::endl;

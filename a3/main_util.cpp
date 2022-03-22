@@ -82,12 +82,13 @@ int main(int argc, char **argv)
 #pragma omp task shared(ansoutput)
             {
                 pq hola;
-                #pragma omp critical
-                {
-                    std::cout<<"\nUser: "<<i<<"\n";
-                    for(int y = 0; y < G->D; y++)std::cout << user_curr[i-off][y] << "|";
-                    std::cout << std::endl;
-                }
+                std::cout<<"\nUser: "<<i<<"\n";
+                // #pragma omp critical
+                // {
+                //     std::cout<<"\nUser: "<<i<<"\n";
+                //     for(int y = 0; y < G->D; y++)std::cout << user_curr[i-off][y] << "|";
+                //     std::cout << std::endl;
+                // }
                 QueryHNSW(user_curr[i-off],i,k,hola,G, num_threads,ansoutput);
             }
         }
@@ -117,3 +118,5 @@ int main(int argc, char **argv)
 }
 // setfacl -m u:cs5190421:rwx *
 // setfacl -m u:cs5190421:rwx .
+// setfacl -m u:cs1190444:rwx *
+// setfacl -m u:cs1190444:rwx .
