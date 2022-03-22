@@ -39,6 +39,7 @@ int main(int argc, char** argv)
     // for(int i = 2; i < 3; i++){
         for(int i = 0; i < G->U; i++){
         pq hola;
+        std::cout<<"User: "<<i<<"\n";
         QueryHNSW(G->user[i],i,k,hola,G, num_threads);
         // print priority queue
 
