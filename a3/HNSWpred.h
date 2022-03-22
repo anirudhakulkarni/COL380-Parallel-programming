@@ -118,7 +118,7 @@ void SearchLayer(float *q,int k,int i, bool visited[], pq &cand, pq top_k,int cu
     }
     cand = top_k;
 }
-void QueryHNSW(float *q,int i,int k, pq &top_k, Graph *G, int num_threads,int *ansoutput)
+void QueryHNSW(float *q,int i,int k, pq &top_k, Graph *G, int num_threads,int **ansoutput)
 {   
     bool visited[G->L];
     memset(visited, false, G->L);
@@ -129,5 +129,19 @@ void QueryHNSW(float *q,int i,int k, pq &top_k, Graph *G, int num_threads,int *a
         // debug(-1,-1);
         SearchLayer(q, k, i, visited, top_k, top_k, curr_lvl, G);
     }
-    return;
+    // std::cout<<"FFFFFFFFFFFFFFFFFFFf :"<<top_k.size()<<" i:"<<i<<std::endl;
+    ansoutput[i]=new int[top_k.size()+1];
+    ansoutput[i][0]=top_k.size();
+    int j=1;
+    while((!top_k.empty()) && j <= k){
+        std::pair<int,float> a=top_k.top();
+                std::cout<<a.first<<"->"<<a.second<<",";
+        top_k.pop();
+        ansoutput[i][j]=a.first;
+        j++;
+        // std::cout<<a.first<<" ";
+    }
+    // std::cout<<"FUCK:inside "<<ansoutput[i][1]<<std::endl;
+
+     return;
 }

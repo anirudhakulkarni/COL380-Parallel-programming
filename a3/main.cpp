@@ -15,62 +15,104 @@ vect: LxD-dimension: represents embedding of each news item
 user: UxD-dimensional array of user features
 */
 using namespace std::chrono;
-int main(int argc, char** argv)
+int main(int argc, char **argv)
 {
-    if(MPI_Init(NULL, NULL) != MPI_SUCCESS)
+    if (MPI_Init(NULL, NULL) != MPI_SUCCESS)
     {
-        fprintf(stderr, "Unable to initialize MPI!\n");return -1;
+        fprintf(stderr, "Unable to initialize MPI!\n");
+        return -1;
     }
     int rank, size;
     int k = std::stoi(argv[1]);
-    std::cout<<k<<"...........\n";
+    std::cout << k << "...........\n";
     std::string inputDir = argv[2];
     int num_threads = std::stoi(argv[3]);
-    auto start=high_resolution_clock::now();
+    auto start = high_resolution_clock::now();
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     MPI_Comm_size(MPI_COMM_WORLD, &size);
     Graph *G = new Graph;
     G->getinputs(inputDir);
     int batch_size = G->U / size + (G->U % size != 0);
-    int n_threads=5;
-    int *ansoutput=new int[G->U];
-#pragma omp parallel num_threads(10)
+    // int n_threads = 5;
+    int **ansoutput = new int *[G->U];
+#pragma omp parallel num_threads(num_threads)
 #pragma omp single
-{    // #pragma omp parallel for num_threads(n_threads)
-    for(int i = rank*batch_size; i < std::min((rank+1)*batch_size, G->U); i++){
-    // for(int i = 2; i < 3; i++){
-        // for(int i = 0; i < G->U; i++){
-
-#pragma omp task 
-{
-        pq hola;
-        // std::cout<<"User: "<<i<<"\n";
-        QueryHNSW(G->user[i],i,k,hola,G, num_threads,ansoutput);
-        // print priority queue
-
-        //COmment afterwards
-        // #pragma omp critical
-        // {
-
-            // std::cout<<"i: "<<i<<": ";
-            int j = 0;
-            while(!hola.empty() && j++ < k){
-                std::pair<int,float> a=hola.top();
-                hola.pop();
-                // std::cout<<a.first<<"->"<<a.second<<",";
+    { // #pragma omp parallel for num_threads(n_threads)
+        for (int i = rank * batch_size; i < std::min((rank + 1) * batch_size, G->U); i++)
+        {
+#pragma omp task shared(ansoutput)
+            {
+                pq hola;
+                std::cout<<"User: "<<i<<"\n";
+                QueryHNSW(G->user[i], i, k, hola, G, num_threads, ansoutput);
             }
-            // std::cout << std::endl;
-        // }
-}
-    }
+        }
 #pragma omp taskwait
+    }
+    if (rank==0){
+                string filename("tmp2.txt");
+        fstream file_out;
+        file_out.open(filename, std::ios_base::out);
+    
 
-}    // G->printinputs();
+        for (int i = rank * batch_size; i < std::min((rank + 1) * batch_size, G->U); i++){
+            for (int j = 0; j < ansoutput[i][0]; j++)
+            {
+                file_out << ansoutput[i][j + 1] << " ";
+            }
+            file_out<< "\n";
+        }
+    }
+    // int **ansoutput_master ;
+    // if(rank == 0){
+    //     std::cout<<"Master thread: assigning\n";
+    //     ansoutput_master = new int *[G->U];
+    //     for (int i = 0; i < G->U; i++)
+    //     {
+    //         ansoutput_master[i] = new int[k + 1];
+    //         for (int j = 0; j < k + 1; j++)
+    //         {
+    //             ansoutput_master[i][j] = ansoutput[i][j];
+    //         }
+    //     }
+    //     std::cout<<"Gathering:\n";
+    // }
+    // MPI_Gather(ansoutput, batch_size * (k + 1), MPI_INT, ansoutput_master, batch_size * (k + 1), MPI_INT, 0, MPI_COMM_WORLD);
+    // if(rank == 0){
+    //     std::ofstream output;
+    //     output.open("output.txt");
+    //     for (int i = 0; i < G->U; i++)
+    //     {
+    //         for (int j = 0; j < k + 1; j++)
+    //         {
+    //             output << ansoutput_master[i][j] << " ";
+    //         }
+    //         output << "\n";
+    //     }
+    //     output.close();
+    // }
+    
+
     MPI_Finalize();
-    auto stop=high_resolution_clock::now();
+        // string filename("tmp.txt");
+        // fstream file_out;
+        // file_out.open(filename, std::ios_base::out);
+    
+        // std::cout << "Printing final ans: " << G->U << "\n";
+        // for (int ii = 0; ii < G->U; ii++)
+        // {
+        //     // std::cout << ansoutput[ii][0];
+        //     for (int j = 0; j < ansoutput[ii][0]; j++)
+        //     {
+        //         file_out << ansoutput[ii][j + 1] << " ";
+        //     }
+        //     file_out<< "\n";
+        // }
+        // file_out.close();
+    auto stop = high_resolution_clock::now();
     auto duration = duration_cast<microseconds>(stop - start);
-    std::cout<<duration.count()/1000000.0<<" seconds" <<std::endl;
+    std::cout << duration.count() / 1000000.0 << " seconds" << std::endl;
     return 0;
 }
-//setfacl -m u:cs5190421:rwx *
-//setfacl -m u:cs5190421:rwx .
+// setfacl -m u:cs5190421:rwx *
+// setfacl -m u:cs5190421:rwx .

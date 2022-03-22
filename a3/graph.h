@@ -50,7 +50,7 @@ class Graph{
         file.close();
 
         L = get_num_lines(inputDir + "vect.txt");
-        U = get_num_lines( "user.txt");
+        U = get_num_lines( inputDir + "user.txt");
         int D1 = get_num_cols(inputDir + "user.txt");
         D = get_num_cols(inputDir + "vect.txt");
 
@@ -118,7 +118,7 @@ class Graph{
         {
             user[i] = new float[D];
         }
-        filename = "user.txt";
+        filename = inputDir + "user.txt";
         file.open(filename.c_str());
         if (file)
         for (int i = 0; i < U; i++)
