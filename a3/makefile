@@ -8,9 +8,9 @@ compile2:
 runp:
 	mpirun -np 1 --bind-to none ./main2 5 ./anz_dd_cp/ 1
 runs:
-	mpirun -np 1 --bind-to none ./main 5 ./anz_dd_cp/ 1
+	mpirun -np 1 --bind-to none ./main 5 ./converted_dd/ 8 ./anz_dd_cp/user.txt
 runb:
-	mpirun -np 1 --bind-to none ./main 4 ./anz_ts/ 1
+	mpirun -np 1 --bind-to none ./main 5 ./converted/ 18 ./converted/user2.txt
 clean:
 	rm -f main
 all:

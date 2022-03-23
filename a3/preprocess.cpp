@@ -109,25 +109,29 @@ int get_num_cols(std::string filename)
     }
     return num_cols;
 }
-void save_parameters(int L, int D, int ep, int max_level, string filename)
+void save_parameters(int L, int D,int ep, int max_level, string filename)
 {
+        std::cout<<"header: "<<L<<" "<<D<<" "<<ep<<" "<<max_level<<"\n";
+    std::cout<<filename<<std::endl;
     ofstream out(filename, ios::out | ios::binary);
     unsigned char buffer[4];
-    memcpy(buffer, &L, sizeof(float));
-    out.write((char *)buffer, sizeof(float));
-    memcpy(buffer, &D, sizeof(float));
-    out.write((char *)buffer, sizeof(float));
-    memcpy(buffer, &ep, sizeof(float));
-    out.write((char *)buffer, sizeof(float));
-    memcpy(buffer, &max_level, sizeof(float));
-    out.write((char *)buffer, sizeof(float));
+    memcpy(buffer, &L, sizeof(int));
+    out.write((char *)buffer, sizeof(int));
+    memcpy(buffer, &D, sizeof(int));
+    out.write((char *)buffer, sizeof(int));
+    memcpy(buffer, &ep, sizeof(int));
+    out.write((char *)buffer, sizeof(int));
+    memcpy(buffer, &max_level, sizeof(int));
+    out.write((char *)buffer, sizeof(int));
 
 }
 
-int main()
+int main(int argc, char **args)
 {
-    string inputDir = "./anz_dd_cp/";
-    int L, D, ep, max_level, *index, *indptr, *level_offset, *level;
+    string inputDir = args[1];
+    string outDir = args[2];
+    
+    int L, D, U,ep, max_level, *index, *indptr, *level_offset, *level;
     L = get_num_lines(inputDir + "vect.txt");
     D = get_num_cols(inputDir + "vect.txt");
     level = new int[L];
@@ -176,7 +180,6 @@ int main()
         file >> level_offset[i];
     }
     file.close();
-    string outDir="./";
     save_1darray(level, L, outDir + "level.bin");
     cout << "level saved" << endl;
     save_1darray(indptr, L + 1, outDir + "indptr.bin");

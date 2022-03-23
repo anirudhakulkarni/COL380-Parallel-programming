@@ -15,12 +15,15 @@ vect: LxD-dimension: represents embedding of each news item
 user: UxD-dimensional array of user features
 */
 
-std::ifstream& GotoLine(std::ifstream& file, int num){
+std::ifstream &GotoLine(std::ifstream &file, int num)
+{
     file.seekg(std::ios::beg);
-if (num== 0)return file;
+    if (num == 0)
+        return file;
     // deb(-1);
     string garbage;
-    for(int i=0; i < num ; ++i){
+    for (int i = 0; i < num; ++i)
+    {
         // deb(-2);
         // file.ignore(std::numeric_limits<std::streamsize>::max(),'\n');
         std::getline(file, garbage);
@@ -41,26 +44,30 @@ int main(int argc, char **argv)
     std::cout << k << "...........\n";
     std::string inputDir = argv[2];
     int num_threads = std::stoi(argv[3]);
+    std::string usertxt=argv[4];
     auto start = high_resolution_clock::now();
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     MPI_Comm_size(MPI_COMM_WORLD, &size);
+    std::cout<<size<<std::endl;
     Graph *G = new Graph;
-    G->getinputs(inputDir);
+    G->getinputs_binary(inputDir,usertxt);
     int batch_size = G->U / size + (rank < G->U % size);
-        int off = 0;
-        if (rank < G->U % size)off+= rank*(G->U / size+1);
-        else off+= (G->U % size)*(G->U / size+1) + (rank-G->U % size)*(G->U / size);
+    int off = 0;
+    if (rank < G->U % size)
+        off += rank * (G->U / size + 1);
+    else
+        off += (G->U % size) * (G->U / size + 1) + (rank - G->U % size) * (G->U / size);
     // int n_threads = 5;
     int *final_outputs;
     if (rank == 0)
     {
-        final_outputs = new int [G->U * (k+1)];
+        final_outputs = new int[G->U * (k + 1)];
         // for(int i = 0; i < G->U; i++)final_outputs[i] = new int [k+1];
     }
-    int *ansoutput = new int [batch_size * (k+1)];
+    int *ansoutput = new int[batch_size * (k + 1)];
 
     ifstream fileu;
-    string filename = inputDir+"user.txt";
+    string filename = usertxt ;
     std::cout << filename << std::endl;
     fileu.open(filename);
     // string random;
@@ -71,53 +78,51 @@ int main(int argc, char **argv)
     GotoLine(fileu, off);
 
     float **user_curr;
-    std::cout << "haha" <<batch_size << ' ' << off << std::endl;
-        // return 0;
     user_curr = new float *[batch_size];
-    std::cout << "G->u3" << G->D << std::endl;
-    for(int i = off; i < off+batch_size; i++)
+    for (int i = off; i < off + batch_size; i++)
     {
         // std::cout << i << std::endl;
         string to_read;
         getline(fileu, to_read);
         // std::cout << "-->" << to_read << std::endl;
         istringstream iss(to_read);
-        user_curr[i-off] = new float[G->D];
-        for(int j = 0; j < G->D; j++)
-        iss >> user_curr[i-off][j];
+        user_curr[i - off] = new float[G->D];
+        for (int j = 0; j < G->D; j++)
+            iss >> user_curr[i - off][j];
     }
-    string file_user("user_read.txt");
-    fstream file_u; 
-    file_u.open(file_user);
-    if (!file_u)std::cout << "Failed to open" << std::endl;
-    // for(int i = off; i < off+batch_size; i++)
-    // {
-    //     std::cout << i << ": "<<std::endl;
-    //     // user_curr[i-off] = new float[G->D];
-    //     for(int j = 0; j < G->D; j++)
-    //     std::cout  << user_curr[i-off][j] << ' ';
-    //     std::cout << '\n';
-    // }
-    // return 0;
+    // string file_user("user_read.txt");
+    // fstream file_u;
+    // file_u.open(file_user);
+    // if (!file_u)
+    //     std::cout << "Failed to open" << std::endl;
+        // for(int i = off; i < off+batch_size; i++)
+        // {
+        //     std::cout << i << ": "<<std::endl;
+        //     // user_curr[i-off] = new float[G->D];
+        //     for(int j = 0; j < G->D; j++)
+        //     std::cout  << user_curr[i-off][j] << ' ';
+        //     std::cout << '\n';
+        // }
+        // return 0;
 
 #pragma omp parallel num_threads(num_threads)
 #pragma omp single
     { // #pragma omp parallel for num_threads(n_threads)
-        for(int i = off; i < off+batch_size; i++)
+        for (int i = off; i < off + batch_size; i++)
         {
             // std::cout<<"\nUserx: "<<i<<"\n";
-#pragma omp task shared(ansoutput)
+#pragma omp task shared(ansoutput,G,user_curr)
             {
                 pq hola;
-                std::cout<<"\nUser: "<<i<<"\n";
+                std::cout << "\nUser: " << i << "\n";
                 // #pragma omp critical
                 // {
-                    // std::cout<<"\nUser: "<<i<<"\n";
-                    
-                    // for(int y = 0; y < G->D; y++)std::cout << user_curr[i-off][y] << "|";
-                    // std::cout << std::endl;
+                // std::cout<<"\nUser: "<<i<<"\n";
+
+                // for(int y = 0; y < G->D; y++)std::cout << user_curr[i-off][y] << "|";
+                // std::cout << std::endl;
                 // }
-                QueryHNSW(user_curr[i-off],i,k,hola,G, num_threads,ansoutput + (i-off)*(k+1));
+                QueryHNSW(user_curr[i - off], i, k, hola, G, num_threads, ansoutput + (i - off) * (k + 1));
             }
         }
 #pragma omp taskwait
@@ -126,26 +131,27 @@ int main(int argc, char **argv)
     // for(int i = 0; i < batch_size*(k+1); i++){
     //     std::cout << ansoutput[i] << ' ';
     // }
-        std::cout << std::endl;
-    MPI_Gather(ansoutput, batch_size * (k+1), MPI_INT, final_outputs, batch_size * (k+1), MPI_INT, 0, MPI_COMM_WORLD);
-    // if (rank == 0)    
+    std::cout << std::endl;
+    MPI_Gather(ansoutput, batch_size * (k + 1), MPI_INT, final_outputs, batch_size * (k + 1), MPI_INT, 0, MPI_COMM_WORLD);
+    // if (rank == 0)
     // for(int i = 0; i < (G->U)*(k+1); i++){
     //     std::cout << final_outputs[i] << ' ';
     // }
     //     std::cout << std::endl;
-    if (rank==0)
+    if (rank == 0)
     {
         string filename2("tmp2.txt");
         fstream file_out;
         file_out.open(filename2);
         // GotoLine(file_out, off);
-        for(int i = 0; i < G->U; i++){
-// std::cout << ansoutput[ii][0];
-            for (int j = 1; j < k+1; j++)
+        for (int i = 0; i < G->U; i++)
+        {
+            // std::cout << ansoutput[ii][0];
+            for (int j = 1; j < k + 1; j++)
             {
-                file_out << final_outputs[i*(k+1) + j ] << " ";
+                file_out << final_outputs[i * (k + 1) + j] << " ";
             }
-            file_out<< "\n";
+            file_out << "\n";
         }
         file_out.close();
     }

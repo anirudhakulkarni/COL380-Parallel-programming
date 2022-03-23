@@ -141,32 +141,24 @@ class Graph{
         return;
     }
 
-    void getinputs_binary(std::string inputDir)
+    void getinputs_binary(std::string inputDir,std::string usertxt)
     {
         auto start = std::chrono::high_resolution_clock::now();
-        std::string filename = inputDir + "parameters.bin";
-        std::fstream file(filename.c_str(), std::ios::in | std::ios::binary);
-        file >> L;
-        file>>ep;
+        U = get_num_lines( usertxt);
+        std::string filename = inputDir + "header.bin";
+        std::ifstream file(filename, std::ios::in | std::ios::binary);
+        file.read((char *)&L, sizeof(float));
+        file.read((char *)&D, sizeof(float));
+        file.read((char *)&ep, sizeof(float));
+        file.read((char *)&max_level, sizeof(float));
         file.close();
-
-        filename = inputDir + "ep.txt";
-        file.open(filename.c_str());
-        file >> ep;
-        file.close();
-
-        L = get_num_lines(inputDir + "vect.txt");
-        U = get_num_lines(inputDir + "user.txt");
-        int D1 = get_num_cols(inputDir + "user.txt");
-        D = get_num_cols(inputDir + "vect.txt");
-
-        assert(D1 == 0 || D1 == D);
+        std::cout<<"parameters: "<<L<<" "<<D<<" "<<ep<<" "<<max_level<<"\n";
         level = new int[L];
-        filename = inputDir + "level.txt";
+        filename = inputDir + "level.bin";
         file.open(filename.c_str());
         for (int i = 0; i < L; i++)
         {
-            file >> level[i];
+            file.read((char *)&level[i], sizeof(float));
         }
         file.close();
 
@@ -175,44 +167,44 @@ class Graph{
         {
             vect[i] = new float[D];
         }
-        std::cout<<"Reading vect.txt"<<std::endl;
-        filename = inputDir + "vect.txt";
+        std::cout<<"Reading vect.bin"<<std::endl;
+        filename = inputDir + "vect.bin";
         file.open(filename.c_str());
         for (int i = 0; i < L; i++)
         {
             for (int j = 0; j < D; j++)
             {
-                file >> vect[i][j];
+                file.read((char *)&vect[i][j], sizeof(float));
             }
         }
         file.close();
-        std::cout<<"Reading indptr.txt"<<std::endl;
-        filename = inputDir + "indptr.txt";
+        std::cout<<"Reading indptr.bin"<<std::endl;
+        filename = inputDir + "indptr.bin";
         file.open(filename.c_str());
         indptr = new int[L + 1];
         for (int i = 0; i < L + 1; i++)
         {
-            file >> indptr[i];
+            file.read((char *)&indptr[i], sizeof(float));
         }
         file.close();
 
         int index_size = indptr[L];
-        filename = inputDir + "index.txt";
+        filename = inputDir + "index.bin";
         file.open(filename.c_str());
         index = new int[index_size];
         for (int i = 0; i < index_size; i++)
         {
-            file >> index[i];
+            file.read((char *)&index[i], sizeof(float));
         }
         file.close();
 
         int level_offset_size = max_level + 1;
-        filename = inputDir + "level_offset.txt";
+        filename = inputDir + "level_offset.bin";
         file.open(filename.c_str());
         level_offset = new int[level_offset_size];
         for (int i = 0; i < level_offset_size; i++)
         {
-            file >> level_offset[i];
+            file.read((char *)&level_offset[i], sizeof(float));
         }
         file.close();
 
@@ -220,16 +212,6 @@ class Graph{
         for (int i = 0; i < U; i++)
         {
             user[i] = new float[D];
-        }
-        filename = inputDir + "user.txt";
-        file.open(filename.c_str());
-        if (file)
-        for (int i = 0; i < U; i++)
-        {
-            for (int j = 0; j < D; j++)
-            {
-                file >> user[i][j];
-            }
         }
         file.close();
         auto stop = std::chrono::high_resolution_clock::now();
