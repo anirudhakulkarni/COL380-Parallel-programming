@@ -25,14 +25,21 @@ public:
 float cosine_dist(float *A, float *B, int &len)
 {
     // std::cout<<"before\n";
-    float dot = 0.0, den_a = 0.0, den_b = 0.0;
+    double dot = 0.0, den_a = 0.0, den_b = 0.0;
     for(int i = 0; i < len; i++){
         // std::cout<<i<<"\n";
         // std::cout<<i<<" "<<A[i]<<" "<<B[i]<<"\n";
         dot+=A[i]*B[i];
         den_a+= A[i]*A[i];den_b+= B[i]*B[i];
     }
-    // std::cout<<"Cosine: "<<1.0-dot / (sqrt(den_a)*sqrt(den_b))<<std::endl;
+    if(den_a==0.0){
+        std::cout<<"This is 0.0:\n";
+        for(int i = 0; i < len; i++){
+            // std::cout<<i<<"\n";
+            std::cout<<i<<" "<<A[i]<<" "<<B[i]<<"\n";
+        }        
+    std::cout<<"Cosine: length: "<<len<<", den_a: "<<den_a << ' ' << den_b << ' ' << 1.0-dot / (sqrt(den_a)*sqrt(den_b))<<std::endl;
+    }
     // std::cout<<"after\n";
     return 1.0-dot / (sqrt(den_a)*sqrt(den_b));
 }
@@ -98,29 +105,13 @@ void SearchLayer(float *q,int k,int i, bool visited[], pq &cand, pq top_k,int cu
             }
             // if (curr_dist > max_so_far && max_so_far > -0.5 && cand.size()>=k)continue;
             top_k.push(make_pair(node, curr_dist));
-            // max_so_far = max(curr_dist, max_so_far);
-            //
-            // pq tmp;
-            // while(!top_k.empty()){
-            //     if(tmp.size() < k) {
-            //         tmp.push({top_k.top().first, top_k.top().second});
-            //         // max_so_far = max(max_so_far, top_k.top().second);
-            //     }
-            //     top_k.pop();
-            // }
             while(top_k.size() > k)top_k.pop();
-            // std::cout<<"Before"<<std::endl;
-            // printQueue(top_k);
-            // top_k = tmp;
-            // printQueue(top_k);
-
-            //
             cand.push(make_pair(node, curr_dist));
         }
     }
     cand = top_k;
 }
-void QueryHNSW(float *q,int i,int k, pq &top_k, Graph *G, int num_threads,int **ansoutput)
+void QueryHNSW(float *q,int i,int k, pq &top_k, Graph *G, int num_threads,int *ansoutput)
 {   
     bool visited[G->L];
     memset(visited, false, G->L);
@@ -132,14 +123,15 @@ void QueryHNSW(float *q,int i,int k, pq &top_k, Graph *G, int num_threads,int **
         SearchLayer(q, k, i, visited, top_k, top_k, curr_lvl, G);
     }
     // std::cout<<"FFFFFFFFFFFFFFFFFFFf :"<<top_k.size()<<" i:"<<i<<std::endl;
-    ansoutput[i]=new int[top_k.size()+1];
-    ansoutput[i][0]=top_k.size();
+    // ansoutput =new int[k+1];
+    std::cout<<"Size of max heap: "<<top_k.size()<<std::endl;
+    ansoutput[0]=top_k.size();
     int j=1;
     while((!top_k.empty()) && j <= k){
         std::pair<int,float> a=top_k.top();
                 std::cout<<a.first<<"->"<<a.second<<",";
         top_k.pop();
-        ansoutput[i][j]=a.first;
+        ansoutput[ansoutput[0]-j+1]=a.first;
         j++;
         // std::cout<<a.first<<" ";
     }

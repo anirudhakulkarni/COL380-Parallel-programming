@@ -77,8 +77,12 @@ class Graph{
             for (int j = 0; j < D; j++)
             {
                 file >> vect[i][j];
+                // if(i%50000==0){            
+                //     std::cout<<vect[i][j]<<" ";
+                // }
             }
             if(i%50000==0){
+
                 std::cout<<i<<std::endl;
             }
         }
