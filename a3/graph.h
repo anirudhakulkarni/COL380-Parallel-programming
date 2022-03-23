@@ -144,10 +144,10 @@ class Graph{
     void getinputs_binary(std::string inputDir)
     {
         auto start = std::chrono::high_resolution_clock::now();
-        std::string filename = inputDir + "max_level.txt";
-        // std::ifstream file(filename.c_str());
+        std::string filename = inputDir + "parameters.bin";
         std::fstream file(filename.c_str(), std::ios::in | std::ios::binary);
-        file >> max_level;
+        file >> L;
+        file>>ep;
         file.close();
 
         filename = inputDir + "ep.txt";
