@@ -4,15 +4,17 @@ CFLAGS=-std=c++11
 compile:
 	$(CC) $(CFLAGS) main.cpp -o main
 compile2:
-	$(CC) $(CFLAGS) main_util.cpp -o main2
+	$(CC) $(CFLAGS) test.cpp -o main2
 runp:
 	mpirun -np 1 --bind-to none ./main2 5 ./anz_dd_cp/ 1
 runs:
-	mpirun -np 1 --bind-to none ./main 5 ./converted_dd/ 8 ./anz_dd_cp/user.txt
+	mpirun --bind-to none ./main 5 ./converted_dd/ ./anz_dd_cp/user.txt
 runb:
-	mpirun -np 1 --bind-to none ./main 5 ./converted/ 2 ./converted/user2.txt
+	mpirun --bind-to none ./main 5 ./converted/ ./converted/user2.txt
 runo:
-	mpirun -np 1 --bind-to none ./main 15 ./converted/ 18 ./anz_ts/user.txt
+	mpirun --bind-to none ./main 15 ./converted/ ./anz_ts/user.txt pred.txt
+runt:
+	mpirun --bind-to none ./main2 15 ./converted/ ./anz_ts/user.txt
 clean:
 	rm -f main
 

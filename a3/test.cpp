@@ -1,157 +1,102 @@
-#include <iostream>
-#include <string>
-#include <fstream>
-#include <assert.h>
-#include <chrono>
 #include <bits/stdc++.h>
+#include <mpi.h>
+using namespace std;
 
-void save_array(float **arr, int r, int c, std::string filename)
+using namespace std::chrono;
+// void read1darray(float *arr,int loc, int L, string filename)
+// {
+//     cout << "reading from txt: " << filename << endl;
+//     std::ifstream file(filename.c_str());
+//     // file.seekg(loc*sizeof(float));
+//     cout << "file opened: " << filename << endl;
+//     for (int i = 0; i < L; i++)
+//     {
+//         file >> arr[i];
+//         cout<<arr[i]<<endl;
+//     }
+//     file.close();
+// }
+void read1darray(float *arr, int loc, int L, string filename)
 {
-    std::ofstream out(filename, std::ios::out | std::ios::binary);
-    unsigned char buffer[4];
-    // save 2d array to binary
-    std::cout<<"saving to binary"<<std::endl;
-    for (int i = 0; i < r; i++)
+    ifstream in(filename, ios::in | ios::binary);
+    in.seekg(loc * sizeof(float));
+    for (int i = 0; i < L; i++)
     {
-        for (int j = 0; j < c; j++)
-        {
-            std::cout<<arr[i][j]<<" ";
-            float val = arr[i][j];
-            memcpy(buffer, &val, sizeof(float));
-            out.write((char *)buffer, sizeof(float));
-        }
-    }
-}
-
-void load_array(float **arr, int r, int c, std::string filename)
-{
-    std::ifstream in(filename, std::ios::in | std::ios::binary);
-    for (int i = 0; i < r; i++)
-    {
-        for (int j = 0; j < c; j++)
-        {
-            float val;
-            in.read((char *)&val, sizeof(float));
-            arr[i][j] = val;
-        }
+        float val;
+        in.read((char *)&val, sizeof(float));
+        arr[i] = val;
     }
     in.close();
 }
-
-void read2darray(float **arr, int L, int D,std::string filename)
-{
-    std::cout<<"reading from txt"<<std::endl;
-    std::ifstream file(filename.c_str());
-    std::cout<<"file opened: "<<filename<<std::endl;
-    for (int i = 0; i < L; i++)
-    {
-        for (int j = 0; j < D; j++)
-        {
-            // output file
-            file >> arr[i][j];
-            std::cout<<arr[i][j]<<" ";
-        }
-        std::cout<<std::endl;
-    }
-    file.close();
-}
-
-int get_num_lines(std::string filename)
-{
-    std::ifstream file(filename.c_str());
-    std::string line;
-    int num_lines = 0;
-    while (getline(file, line))
-    {
-        num_lines++;
-    }
-    return num_lines;
-}
-int get_num_cols(std::string filename)
-{
-    std::ifstream file(filename.c_str());
-    std::string line;
-    int num_cols = 0;
-    getline(file, line);
-    std::stringstream ss(line);
-    std::string token;
-    while (getline(ss, token, ' '))
-    {
-        num_cols++;
-    }
-    return num_cols;
-}
 int main()
 {
-    std::string inputDir = "./anz_dd_cp/";
-    int L, D;
-    L = get_num_lines(inputDir + "vect.txt");
-    D = get_num_cols(inputDir + "vect.txt");
-    float **arr= new float*[L];
-    for (int i = 0; i < L; i++)
+    // use mpi to read 2d vector in parallel and save it to a file
+    int rank, size;
+    MPI_Init(NULL, NULL);
+    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+    MPI_Comm_size(MPI_COMM_WORLD, &size);
+    // time taken to read and save
+    auto start = high_resolution_clock::now();
+
+    int L = 1305265;
+    int D = 768;
+    cout << "rank: " << rank << " size: " << size << endl;
+    // read in single array of size L/size*D
+    int *displs = new int[size];
+    int *counts = new int[size];
+    for (int i = 0; i < L % size; i++)
     {
-        arr[i] = new float[D];
+        counts[i] = D * (L / size + 1);
+        displs[i] = i * counts[i];
     }
-    read2darray(arr, L, D, inputDir + "vect.txt");
-    // float **arr = new float *[10];
-    // for (int i = 0; i < 10; i++)
-    // {
-    //     arr[i] = new float[10];
-    //     for (int j = 0; j < 10; j++)
-    //     {
-    //         arr[i][j] = (i + 17.0) / (j + 1.0);
-    //     }
+    for (int i = L % size; i < size; i++)
+    {
+        if (i == L % size)
+        {
+            counts[i] = D * (L / size);
+            displs[i] = (L % size) * D * (L / size + 1);
+        }
+        else
+        {
+            counts[i] = D * (L / size);
+            displs[i] = displs[i - 1] + counts[i - 1];
+        }
+        // displs[i]=i-(L%size)*(L/size)+D%size*(L/size+1);
+        // counts[i]=D*(L/size);
+    }
+    int loc = displs[rank];
+    int end = displs[rank] + counts[rank];
+    float *arr = new float[end - loc];
+    read1darray(arr, loc, end - loc, "converted/vect.bin");
+    // for(int i=0;i<end-loc;i++){
+    //     cout<<arr[i]<<" ";
     // }
-    for (int i = 0; i < L; i++)
+    // cout<<endl;
+
+    // cout<<"displs: ";
+    // for(int i=0;i<size;i++){
+    //     cout<<displs[i]<<" ";
+    // }
+    // cout<<endl;
+    // cout<<"counts: ";
+    // for(int i=0;i<size;i++){
+    //     cout<<counts[i]<<" ";
+    // }
+    // cout<<"counts: ";
+    MPI_Barrier(MPI_COMM_WORLD);
+    float *big_arr = new float[L * D];
+    MPI_Gatherv(arr, end - loc, MPI_FLOAT, big_arr, counts, displs, MPI_FLOAT, 0, MPI_COMM_WORLD);
+    if (rank == 0)
     {
-        for (int j = 0; j < D; j++)
+        for (int i = 0; i < L * D; i++)
         {
-            std::cout << arr[i][j] << " ";
+            // cout << big_arr[i] << " ";
+            // cout << endl;
         }
-        std::cout << std::endl;
     }
-    save_array(arr, L, D, "test.bin");
-    std::cout<<"saved\n";
-    float **arr2 = new float *[L];
-    for (int i = 0; i < L; i++)
-    {
-        arr2[i] = new float[D];
-    }
-    load_array(arr2, L, D, "test.bin");
-    for (int i = 0; i < L; i++)
-    {
-        for (int j = 0; j < D; j++)
-        {
-            std::cout << arr2[i][j] << " ";
-        }
-        std::cout << std::endl;
-    }
-    std::cout<<"loaded\n";
-
-    std::string filename="./anz_dd_cp/vect.txt";
-    std::cout<<"reading from txt"<<std::endl;
-    std::ifstream file(filename.c_str());
-    file.open(filename.c_str());
-    std::cout<<"file opened: "<<filename<<std::endl;
-    float a;
-    file>>a;
-    std::cout<<a<<std::endl;
-    for (int i = 0; i < L; i++)
-    {
-        for (int j = 0; j < D; j++)
-        {
-            // output file
-            float a;
-            file >> a;
-            std::cout<<a<<" ";
-        }
-        std::cout<<std::endl;
-    }
-    file.close();
-
-
-    // read filename and print
-
-
-    return 0;
+    MPI_Finalize();
+    // print time taken
+    auto stop = high_resolution_clock::now();
+    auto duration = duration_cast<microseconds>(stop - start);
+    std::cout << duration.count() / 1000000.0 << " seconds" << std::endl;
 }

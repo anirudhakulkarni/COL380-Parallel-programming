@@ -18,8 +18,18 @@ public:
         return p1.second < p2.second;
     }
 };
+class myComparator2
+{
+public:
+    int operator()(const pair<int, float> &p1, const pair<int, float> &p2)
+    {
+        // min heap. Min value stays at top >
+        return p1.second > p2.second;
+    }
+};
 
 #define pq priority_queue<pair<int, float>, vector<pair<int, float>>, myComparator>
+#define pq_min priority_queue<pair<int, float>, vector<pair<int, float>>, myComparator2>
 // #define pq priority_queue<pair<int, float>, vector<pair<int, float>>>//, greater<pair<int, float>>>
 
 float cosine_dist(float *A, float *B, int &len)
@@ -86,11 +96,12 @@ int getMaxInPQ(pq f)
 void SearchLayer(float *q, int k, int i, bool visited[], pq &cand, pq top_k, int curr_lvl, Graph *G)
 {
     float max_so_far = -1.0;
+    pq_min cand_min;
+    
     while (cand.size() > 0)
     {
         pair<int, float> top_el = cand.top();
         cand.pop();
-        // std::cout<<"top_el: "<<top_el.first<<" "<<top_el.second<<" current_lvl: "<<curr_lvl<<" \n";
         int start = G->indptr[top_el.first] + G->level_offset[curr_lvl];
         int end = G->indptr[top_el.first] + G->level_offset[curr_lvl + 1];
         // debug(start, end);
@@ -126,7 +137,7 @@ void SearchLayer(float *q, int k, int i, bool visited[], pq &cand, pq top_k, int
     }
     cand = top_k;
 }
-void QueryHNSW(float *q, int i, int k, pq &top_k, Graph *G, int num_threads, int *ansoutput)
+void QueryHNSW(float *q, int i, int k, pq &top_k, Graph *G, int *ansoutput)
 {
     bool visited[G->L];
     memset(visited, false, G->L);
@@ -136,23 +147,24 @@ void QueryHNSW(float *q, int i, int k, pq &top_k, Graph *G, int num_threads, int
     for (int curr_lvl = G->max_level - 1; curr_lvl >= 0; curr_lvl--)
     {
         // debug(-1,-1);
+        // std::cout<<i<<"\n";
         SearchLayer(q, k, i, visited, top_k, top_k, curr_lvl, G);
     }
     // std::cout<<"FFFFFFFFFFFFFFFFFFFf :"<<top_k.size()<<" i:"<<i<<std::endl;
     // ansoutput =new int[k+1];
     // std::cout << "Size of max heap: " << top_k.size() << std::endl;
-    ansoutput[0] = top_k.size();
+    // ansoutput[0] = top_k.size();
     int j = 1;
     while ((!top_k.empty()) && j <= k)
     {
         std::pair<int, float> a = top_k.top();
         // std::cout << a.first << "->" << a.second << ",";
         top_k.pop();
-        ansoutput[ansoutput[0] - j + 1] = a.first;
+        ansoutput[k-j ] = a.first;
         j++;
         // std::cout<<a.first<<" ";
     }
-    // std::cout<<"FUCK:inside "<<ansoutput[i][1]<<std::endl;
+    // std::cout<<"FUCK:inside "<<ansoutput[i][1]<<std::endl; 331/40
 
     return;
 }

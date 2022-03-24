@@ -1,4 +1,3 @@
-1. pair to int. try to use pointers as much as possible
-2. change priority queue in bfs to normal queue
-3. increase task size
-4. sort by name order
+1. change priority queue in bfs to normal queue
+2. binary read all gather
+3. offset issue

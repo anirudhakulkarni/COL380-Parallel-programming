@@ -43,12 +43,12 @@ int main(int argc, char **argv)
     int k = std::stoi(argv[1]);
     std::cout << k << "...........\n";
     std::string inputDir = argv[2];
-    int num_threads = std::stoi(argv[3]);
-    std::string usertxt = argv[4];
+    std::string usertxt = argv[3];
+    std::string outputfile=argv[4];
     auto start = high_resolution_clock::now();
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     MPI_Comm_size(MPI_COMM_WORLD, &size);
-    std::cout << size << std::endl;
+    std::cout << "Size: "<<size<<" Rank: "<<rank << std::endl;
     Graph *G = new Graph;
     G->getinputs_binary(inputDir, usertxt);
     int batch_size = G->U / size + (rank < G->U % size);
@@ -58,13 +58,8 @@ int main(int argc, char **argv)
     else
         off += (G->U % size) * (G->U / size + 1) + (rank - G->U % size) * (G->U / size);
     // int n_threads = 5;
-    int *final_outputs;
-    if (rank == 0)
-    {
-        final_outputs = new int[G->U * (k + 1)];
-        // for(int i = 0; i < G->U; i++)final_outputs[i] = new int [k+1];
-    }
-    int *ansoutput = new int[batch_size * (k + 1)];
+
+    int *ansoutput = new int[batch_size * k];
 
     ifstream fileu;
     string filename = usertxt;
@@ -90,92 +85,118 @@ int main(int argc, char **argv)
         for (int j = 0; j < G->D; j++)
             iss >> user_curr[i - off][j];
     }
-    // string file_user("user_read.txt");
-    // fstream file_u;
-    // file_u.open(file_user);
-    // if (!file_u)
-    //     std::cout << "Failed to open" << std::endl;
-    // for(int i = off; i < off+batch_size; i++)
-    // {
-    //     std::cout << i << ": "<<std::endl;
-    //     // user_curr[i-off] = new float[G->D];
-    //     for(int j = 0; j < G->D; j++)
-    //     std::cout  << user_curr[i-off][j] << ' ';
-    //     std::cout << '\n';
-    // }
-    // return 0;
-
-#pragma omp parallel num_threads(num_threads)
+        // #pragma omp critical
+        // G->printinputs();
+// #pragma omp parallel num_threads(num_threads)
+#pragma omp parallel 
 #pragma omp single
-    { // #pragma omp parallel for num_threads(n_threads)
-//         for (int i = off; i < off + batch_size; i++)
-//         {
-//             // std::cout<<"\nUserx: "<<i<<"\n";
-// #pragma omp task shared(ansoutput, G, user_curr)
-//             {
-//                 pq hola;
-//                 std::cout << "\nUser: " << i << "\n";
-//                 // #pragma omp critical
-//                 // {
-//                 // std::cout<<"\nUser: "<<i<<"\n";
+    {   // #pragma omp parallel for num_threads(n_threads)
+        //         for (int i = off; i < off + batch_size; i++)
+        //         {
+        //             // std::cout<<"\nUserx: "<<i<<"\n";
+        // #pragma omp task shared(ansoutput, G, user_curr)
+        //             {
+        //                 pq hola;
+        //                 std::cout << "\nUser: " << i << "\n";
+        //                 // #pragma omp critical
+        //                 // {
+        //                 // std::cout<<"\nUser: "<<i<<"\n";
 
-//                 // for(int y = 0; y < G->D; y++)std::cout << user_curr[i-off][y] << "|";
-//                 // std::cout << std::endl;
-//                 // }
-//                 QueryHNSW(user_curr[i - off], i, k, hola, G, num_threads, ansoutput + (i - off) * (k + 1));
-//             }
-//         }
-        for (int i = off; i < off + batch_size; i+=10)
+        //                 // for(int y = 0; y < G->D; y++)std::cout << user_curr[i-off][y] << "|";
+        //                 // std::cout << std::endl;
+        //                 // }
+        //                 QueryHNSW(user_curr[i - off], i, k, hola, G, num_threads, ansoutput + (i - off) * (k + 1));
+        //             }
+        //         }
+
+        for (int i = off; i < off + batch_size; i += 10)
         {
 
 #pragma omp task shared(ansoutput, G, user_curr)
             {
-                for (int j=i; j < std::min(i+10, off + batch_size); j++)
+                for (int j = i; j < std::min(i + 10, off + batch_size); j++)
                 {
                     pq hola;
-                    // std::cout << "\nUser: " << j << "\n";
-                    QueryHNSW(user_curr[j - off], j, k, hola, G, num_threads, ansoutput + (j - off) * (k + 1));
+                    // std::cout << "\nUser: " << j <<" offset: "<<off<< "\n";
+                    QueryHNSW(user_curr[j - off], j, k, hola, G, ansoutput + (j - off) * k);
                 }
-                
             }
         }
 
 #pragma omp taskwait
     }
-    // if (rank == 2)
-    // for(int i = 0; i < batch_size*(k+1); i++){
-    //     std::cout << ansoutput[i] << ' ';
-    // }
-    std::cout << std::endl;
-    MPI_Gather(ansoutput, batch_size * (k + 1), MPI_INT, final_outputs, batch_size * (k + 1), MPI_INT, 0, MPI_COMM_WORLD);
+
     // if (rank == 0)
-    // for(int i = 0; i < (G->U)*(k+1); i++){
-    //     std::cout << final_outputs[i] << ' ';
-    // }
-    //     std::cout << std::endl;
+    // std::cout<<"Answout: "<<std::endl;
+    //     for (int i = 0; i < batch_size * k; i++)
+    //     {
+    //         std::cout << ansoutput[i] << ' ';
+    //     }
+    std::cout << std::endl;
+    int *displs = new int[size];
+    int *counts = new int[size];
+    for (int i = 0; i < G->U % size; i++)
+    {
+        counts[i] = k * (G->U / size + 1);
+        displs[i] = i * counts[i];
+    }
+    for (int i = G->U % size; i < size; i++)
+    {
+        if (i == G->U % size)
+        {
+            counts[i] = k * (G->U / size);
+            displs[i] = (G->U % size) * k * (G->U / size + 1);
+        }
+        else
+        {
+            counts[i] = k * (G->U / size);
+            displs[i] = displs[i - 1] + counts[i - 1];
+        }
+        // displs[i]=i-(L%size)*(L/size)+D%size*(L/size+1);
+        // counts[i]=D*(L/size);
+    }
+    int *final_outputs;
     if (rank == 0)
     {
-        std::cout<<"Saving\n";
-        string filename2("tmp3_or.txt");
+        final_outputs = new int[G->U * k];
+        // for(int i = 0; i < G->U; i++)final_outputs[i] = new int [k+1];
+    }
+    std::cout<<"Sending\n";
+    // MPI_Gather(ansoutput, batch_size * (k + 1), MPI_INT, final_outputs, batch_size * (k + 1), MPI_INT, 0, MPI_COMM_WORLD);
+    // MPI_Gatherv(ansoutput,  , MPI_INT, final_outputs, batch_size * k , MPI_INT, 0, MPI_COMM_WORLD);
+    MPI_Gatherv(ansoutput, counts[rank], MPI_FLOAT, final_outputs, counts, displs, MPI_FLOAT, 0, MPI_COMM_WORLD);
+    // if (rank == 0)
+    //     for (int i = 0; i < (G->U) * (k ); i++)
+    //     {
+    //         std::cout << final_outputs[i] << ' ';
+    //     }
+    // std::cout << std::endl;
+    std::cout<<"recieved\n";
+    if (rank == 0)
+    {
+        std::cout << "Saving\n";
+        string filename2 = outputfile;
         fstream file_out;
-        file_out.open(filename2,fstream::out);
-        if(file_out.is_open()){
-            std::cout<<"opened\n";
+        file_out.open(filename2, fstream::out);
+        if (file_out.is_open())
+        {
+            std::cout << "opened\n";
         }
         // GotoLine(file_out, off);
+
         for (int i = 0; i < G->U; i++)
         {
             // std::cout << ansoutput[ii][0];
-            for (int j = 1; j < k + 1; j++)
+            for (int j = 0; j < k ; j++)
             {
-                file_out << final_outputs[i * (k + 1) + j] << " ";
+                file_out << final_outputs[i * (k ) + j] << " ";
                 // std::cout<<final_outputs[i * (k + 1) + j] << " ";
             }
             file_out << "\n";
         }
         file_out.close();
     }
-
+    std::cout<<"Wrote\n";
     MPI_Finalize();
     auto stop = high_resolution_clock::now();
     auto duration = duration_cast<microseconds>(stop - start);
@@ -185,4 +206,4 @@ int main(int argc, char **argv)
 // setfacl -m u:cs5190421:rwx *
 // setfacl -m u:cs5190421:rwx .
 // setfacl -m u:cs1190444:rwx *
-// setfacl -m u:cs1190444:rwx .
+// setfacl -m u:cs1190444:rwx . make compile && mpirun -np 1 --bind-to none ./main 5 ./converted_dd/ 8 ./anz_dd_cp/user2.txt

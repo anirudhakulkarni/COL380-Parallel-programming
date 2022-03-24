@@ -42,10 +42,14 @@ def cal():
 import sys
 pred = []
 gh = []
-
-with open(sys.argv[1]) as fs:
+f1="tmp3_or.txt"
+f2="anz_ts/user_gt.txt"
+if(len(sys.argv)>2):
+    f1=sys.argv[1]
+    f2=sys.argv[2]
+with open(f1) as fs:
     pred = fs.readlines()
-with open(sys.argv[2]) as fs:
+with open(f2) as fs:
     gh = fs.readlines()
 
 def makeints(pred):
