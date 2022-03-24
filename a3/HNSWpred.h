@@ -113,7 +113,7 @@ void SearchLayer(float *q, int k, int i, bool visited[], pq &cand, pq top_k, int
             // if (cand.size()>=k && curr_dist > cand.top().second){
             //     continue;
             // }
-            if (cand.size() >= k && curr_dist > cand.top().second)
+            if (top_k.size() >= k && curr_dist > top_k.top().second)
             {
                 continue;
             }
@@ -140,7 +140,7 @@ void QueryHNSW(float *q, int i, int k, pq &top_k, Graph *G, int num_threads, int
     }
     // std::cout<<"FFFFFFFFFFFFFFFFFFFf :"<<top_k.size()<<" i:"<<i<<std::endl;
     // ansoutput =new int[k+1];
-    std::cout << "Size of max heap: " << top_k.size() << std::endl;
+    // std::cout << "Size of max heap: " << top_k.size() << std::endl;
     ansoutput[0] = top_k.size();
     int j = 1;
     while ((!top_k.empty()) && j <= k)

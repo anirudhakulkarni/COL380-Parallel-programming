@@ -39,4 +39,45 @@ def cal():
     print(precision(topk,gt,10))
     print(recall(topk,gt,10))
 
-cal()
+import sys
+pred = []
+gh = []
+
+with open(sys.argv[1]) as fs:
+    pred = fs.readlines()
+with open(sys.argv[2]) as fs:
+    gh = fs.readlines()
+
+def makeints(pred):
+    k = []
+    for p in pred:
+        l = str.split(p)
+        print(l)
+        ks = []
+        for v in l:
+            ks.append(int(v))
+        k.append(ks)
+    return k
+
+pred = makeints(pred)
+gh = makeints(gh)
+
+precision = 0
+recall = 0
+
+assert(len(pred) == len(gh))
+
+for i in range(len(pred)):
+    inter =0
+    for p in pred[i]:
+        if p in gh[i]:
+            inter+=1
+            print("common :", p)
+    if(len(pred[i]) > 0):
+        precision += inter/len(pred[i])
+    if(len(gh[i]) > 0):
+        recall += inter/len(gh[i])
+
+print("precision ", precision * 100 /len(pred))
+print("recall ", recall * 100/len(gh))
+    

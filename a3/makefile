@@ -10,9 +10,13 @@ runp:
 runs:
 	mpirun -np 1 --bind-to none ./main 5 ./converted_dd/ 8 ./anz_dd_cp/user.txt
 runb:
-	mpirun -np 1 --bind-to none ./main 5 ./converted/ 18 ./converted/user2.txt
+	mpirun -np 1 --bind-to none ./main 5 ./converted/ 2 ./converted/user2.txt
+runo:
+	mpirun -np 1 --bind-to none ./main 15 ./converted/ 18 ./anz_ts/user.txt
 clean:
 	rm -f main
+
+
 all:
 	$(CC) $(CFLAGS) main.cpp -o main && ./main 5
 	# qsub -I -P col380.cs5190421 -N interactive_shell -lselect=1:ncpus=4 -lwalltime=00:30:00 /
