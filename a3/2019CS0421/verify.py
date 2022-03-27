@@ -36,8 +36,8 @@ def cal():
     for line in file2:
         line = line.strip().split(' ')
         gt.append(line)
-    # print(precision(topk,gt,10))
-    # print(recall(topk,gt,10))
+    print(precision(topk,gt,10))
+    print(recall(topk,gt,10))
 
 import sys
 pred = []
@@ -56,7 +56,7 @@ def makeints(pred):
     k = []
     for p in pred:
         l = str.split(p)
-        # print(l)
+        print(l)
         ks = []
         for v in l:
             ks.append(int(v))
@@ -76,7 +76,7 @@ for i in range(len(pred)):
     for p in pred[i]:
         if p in gh[i]:
             inter+=1
-            # print("common :", p)
+            print("common :", p)
     if(len(pred[i]) > 0):
         precision += inter/len(pred[i])
     if(len(gh[i]) > 0):
