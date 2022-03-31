@@ -3,4 +3,12 @@ test:
 	./a.out
 main:
 	nvcc -arch=sm_35 main.cu -o outmain
-	./outmain
+	./outmain 
+perf:
+	nvcc -arch=sm_35 perf.cu -o perf
+	./perf
+run:
+	./run.sh data/data_image.txt data/query_image.txt 1 2 1
+c:
+	g++ test2.cpp -o a.out
+	./a.out data/data_image.txt data/query_image.txt 10000 1 1

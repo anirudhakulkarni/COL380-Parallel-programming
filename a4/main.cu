@@ -8,7 +8,7 @@ unordered_map<int, float> cos_ = {{-2, 0}, {-1, 0.414}, {0, 1}, {1, 0.414}, {2, 
 unordered_map<int, float> sin_ = {{-2, -1}, {-1, -0.414}, {0, 0}, {1, 0.414}, {2, 1}};
 
 float matchTemplateGPU(vector<vector<vector<uint8_t>>> &queryImage, vector<vector<vector<uint8_t>>> &dataImage, int &i, int &j, int &k){
-
+	return 1.0;
 }
 
 float filterTemplate(vector<vector<float>> &queryImagePrefixSum, vector<vector<float>> &dataImagePrefixSum, int &i, int &j, int &k){
