@@ -28,13 +28,12 @@ __global__ void matchTemplateGPU_kernel(int* queryImage, int* dataImage, int r_d
     int j1 = absi % c_d;
     //   if(i1==0)
     //   printf("%d, %d\n",i1,j1);
-    if (!(i1 < r_d && j1<c_d)){printf("i:%d, j:%d\n",i1,j1);return;}
+    anserarray[absi] = 1;
+    if (!(i1 < r_d && j1))return;
     for (int k1 = 0;k1 < 3;k1++)
     {
         if (!(i1 < r_d && j1 < c_d && k1 < 3))break;
-			anserarray[i1*c_d*3+j1*3+k1] = 1;
-        
-		// calculate greyscale difference
+        // calculate greyscale difference
       //   float greyscale=0;
       //   if (greyscale >= threshold2)
       // 	{
@@ -127,23 +126,17 @@ int main(int argc, char const* argv[])
 
     int* anserarray = new int[r_d * c_d * 3];
     memset(anserarray, 0, sizeof(anserarray));
-    
-	int* anserarray_GPU;
-	cudaMalloc(&anserarray_GPU, r_d * c_d * 3 * sizeof(int));
-    // cudaMalloc(&anserarray, r_d * c_d * 3 * sizeof(int));
-    // std::cout << "CUDA error: " << cudaGetErrorString(cudaGetLastError()) << std::endl; // add
+    int* anserarray_GPU;
+    cudaMalloc(&anserarray, r_d * c_d * 3 * sizeof(int));
+    std::cout << "CUDA error: " << cudaGetErrorString(cudaGetLastError()) << std::endl; // add
     cudaMemcpy(anserarray_GPU, anserarray, r_d * c_d * 3 * sizeof(int), cudaMemcpyHostToDevice);
     // memset(anserarray,0,sizeof(anserarray));
     cout << "Time taken for alllocate:\t" << (1e-6 * (std::chrono::duration_cast<std::chrono::nanoseconds>(std::chrono::high_resolution_clock::now() - begin)).count()) << "ms" << endl;
     std::cout << "CUDA error: " << cudaGetErrorString(cudaGetLastError()) << std::endl; // add
 
-    matchTemplate_GPU(queryImage_GPU, dataImage_GPU, threshold1, threshold2, r_d, c_d, r_q, c_q, anserarray_GPU);
+    matchTemplate_GPU(queryImage_GPU, dataImage_GPU, threshold1, threshold2, r_d, c_d, r_q, c_q, anserarray);
     std::cout << "CUDA error: " << cudaGetErrorString(cudaGetLastError()) << std::endl; // add
     cudaDeviceSynchronize();
-	cudaMemcpy(anserarray,anserarray_GPU,r_d * c_d * 3 * sizeof(int), cudaMemcpyDeviceToHost);
-	for(int i=0;i<r_d * c_d * 3 ;i++){
-		if(!anserarray[i])cout<<i<<endl;
-	}
     auto end = std::chrono::high_resolution_clock::now();
     auto elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
     float duration = (1e-6 * (std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin)).count());
