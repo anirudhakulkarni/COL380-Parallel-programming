@@ -64,8 +64,10 @@ void matchTemplateConfig(vector<vector<vector<int>>> &queryImage, vector<vector<
 	{
 		return;
 	}
-	cout << i << " " << j << " " << k << " " << tempThreshold2 << endl;
 	float tempThreshold1 = matchTemplateGPU(queryImage, dataImage, i, j, k);
+	if(dataImage.size()-i-1==290 ){
+		cout << i << " " << j << " " << k << " " << tempThreshold1 << endl;
+	}
 	if (tempThreshold1 < threshold1)
 	{
 		top_n.push({tempThreshold1, {i, j, k}});
@@ -73,6 +75,9 @@ void matchTemplateConfig(vector<vector<vector<int>>> &queryImage, vector<vector<
 		{
 			top_n.pop();
 		}
+	}
+	if(dataImage.size()-i-1==290 && j==119 &&k==1){
+		cout << i << " " << j << " " << k << " " << tempThreshold1 << endl;
 	}
 }
 

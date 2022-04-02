@@ -18,7 +18,6 @@ __global__ void matchTemplateGPU_kernel(int* queryImage, int* dataImage, int r_d
     // int angle[3]={ -45,  0, 45};
     // float  cosine[3] = {0.70710, 1, 0.70710};
     // float  sine[3] = { -0.70710 , 0, 0.70710};
-    float temp = 0;
     // DEBUG:
   //   int i1=blockIdx.x*blockDim.x+threadIdx.x;
   //   int j1=blockIdx.y*blockDim.y+threadIdx.y;
@@ -28,20 +27,24 @@ __global__ void matchTemplateGPU_kernel(int* queryImage, int* dataImage, int r_d
     int j1 = absi % c_d;
     //   if(i1==0)
     //   printf("%d, %d\n",i1,j1);
-    anserarray[absi] = 1;
-    if (!(i1 < r_d && j1))return;
+    // if (!(i1 < r_d && j1<c_d)){printf("i:%d, j:%d\n",i1,j1);return;}
     for (int k1 = 0;k1 < 3;k1++)
     {
+        float temp = 0;
         if (!(i1 < r_d && j1 < c_d && k1 < 3))break;
-        // calculate greyscale difference
-      //   float greyscale=0;
-      //   if (greyscale >= threshold2)
-      // 	{
-      // 		return;
-      // 	}
-          // greyscale=queryImage[4];
-      // 3*i*width+j*3+k
-          // temp=temp+1;
+        anserarray[i1 * c_d * 3 + j1 * 3 + k1] = 1;
+        // if(r_d-i1-1==290 ){
+        //   printf("%d, %d, %d\n",i1,j1,k1);
+        // }
+    // calculate greyscale difference
+  //   float greyscale=0;
+  //   if (greyscale >= threshold2)
+  // 	{
+  // 		return;
+  // 	}
+      // greyscale=queryImage[4];
+  // 3*i*width+j*3+k
+      // temp=temp+1;
         for (int i = 0; i < r_q; i++)
         {
             for (int j = 0; j < c_q; j++)
@@ -51,7 +54,10 @@ __global__ void matchTemplateGPU_kernel(int* queryImage, int* dataImage, int r_d
 
                     int i2 = i1 - int(i * cosine[k1] + j * sine[k1]), j2 = j1 + int(j * cosine[k1] - i * sine[k1]);
                     temp += pow(queryImage[(r_q - i - 1) * 3 * c_q + j * 3 + k] - ((i2 >= 0 && i2 < r_d&& j2 >= 0 && j2 < c_d) ? dataImage[i2 * 3 * c_d + j2 * 3 + k] : 0), 2);
-                    // temp += pow(queryImage[((i2 >= 0 && i2 < r_d && j2 >= 0 && j2 < c_d) ? dataImage[i2*3*r_d+j2*3+k] : 0), 2);
+                    // if(r_d-i1-1==290 && j1==119 &&k==2){
+                    //     printf("I: %d,J: %d, K: %d, Temp: %d\n",i,j,k,temp);
+                    //   }
+                              // temp += pow(queryImage[((i2 >= 0 && i2 < r_d && j2 >= 0 && j2 < c_d) ? dataImage[i2*3*r_d+j2*3+k] : 0), 2);
                     // temp += pow(queryImage[(i )*3*c_q+j*3+k], 2);
                     // float f=queryImage[(r_q - i - 1)*3*c_q+j*3+k]);// - ((i2 >= 0 && i2 < r_d && j2 >= 0 && j2 < c_d) ? dataImage[i2*3*c_d+j2*3+k] : 0);
                     // float f=0.0001;
@@ -64,12 +70,12 @@ __global__ void matchTemplateGPU_kernel(int* queryImage, int* dataImage, int r_d
             }
         }
         float ans;
-        //   printf("temp: %f",temp);
+        //   printf("temp: %f\n",temp);
 
         ans = sqrt(((float)(temp)) / r_q / c_q / 3.0);
         //   printf("ans: %f",ans);
-        if (ans < 1) {
-            printf("I: %d, J: %d, k: %d", i1, j1, k1);
+        if (ans > 10 && ans < 60) {
+            printf("ANSwer: I: %d, J: %d, k: %d, ans: %d\n", i1, j1, k1, ans);
             // cout<<i<<" "<<j<<" "<<k<<" "<<ans<<endl;
         }
     }
@@ -126,17 +132,23 @@ int main(int argc, char const* argv[])
 
     int* anserarray = new int[r_d * c_d * 3];
     memset(anserarray, 0, sizeof(anserarray));
+
     int* anserarray_GPU;
-    cudaMalloc(&anserarray, r_d * c_d * 3 * sizeof(int));
-    std::cout << "CUDA error: " << cudaGetErrorString(cudaGetLastError()) << std::endl; // add
+    cudaMalloc(&anserarray_GPU, r_d * c_d * 3 * sizeof(int));
+    // cudaMalloc(&anserarray, r_d * c_d * 3 * sizeof(int));
+    // std::cout << "CUDA error: " << cudaGetErrorString(cudaGetLastError()) << std::endl; // add
     cudaMemcpy(anserarray_GPU, anserarray, r_d * c_d * 3 * sizeof(int), cudaMemcpyHostToDevice);
     // memset(anserarray,0,sizeof(anserarray));
     cout << "Time taken for alllocate:\t" << (1e-6 * (std::chrono::duration_cast<std::chrono::nanoseconds>(std::chrono::high_resolution_clock::now() - begin)).count()) << "ms" << endl;
     std::cout << "CUDA error: " << cudaGetErrorString(cudaGetLastError()) << std::endl; // add
 
-    matchTemplate_GPU(queryImage_GPU, dataImage_GPU, threshold1, threshold2, r_d, c_d, r_q, c_q, anserarray);
+    matchTemplate_GPU(queryImage_GPU, dataImage_GPU, threshold1, threshold2, r_d, c_d, r_q, c_q, anserarray_GPU);
     std::cout << "CUDA error: " << cudaGetErrorString(cudaGetLastError()) << std::endl; // add
     cudaDeviceSynchronize();
+    cudaMemcpy(anserarray, anserarray_GPU, r_d * c_d * 3 * sizeof(int), cudaMemcpyDeviceToHost);
+    for (int i = 0;i < r_d * c_d * 3;i++) {
+        if (!anserarray[i])cout << i << endl;
+    }
     auto end = std::chrono::high_resolution_clock::now();
     auto elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
     float duration = (1e-6 * (std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin)).count());
