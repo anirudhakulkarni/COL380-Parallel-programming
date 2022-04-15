@@ -39,6 +39,7 @@ def cal():
     # print(precision(topk,gt,10))
     # print(recall(topk,gt,10))
 
+from code import interact
 import sys
 pred = []
 gh = []
@@ -70,13 +71,14 @@ precision = 0
 recall = 0
 
 assert(len(pred) == len(gh))
-
+test=0
 for i in range(len(pred)):
     inter =0
     for p in pred[i]:
         if p in gh[i]:
             inter+=1
             # print("common :", p)
+    test+=inter
     if(len(pred[i]) > 0):
         precision += inter/len(pred[i])
     if(len(gh[i]) > 0):
@@ -85,3 +87,4 @@ for i in range(len(pred)):
 print("precision ", precision * 100 /len(pred))
 print("recall ", recall * 100/len(gh))
     
+print(test)

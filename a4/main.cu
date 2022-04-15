@@ -12,8 +12,8 @@ public:
 #define pq priority_queue <pair<float, vector<int>>, vector<pair<float, vector<int>>>, compare >
 
 int angle[3] = { -45,  0, 45 };
-__device__ float  cosine[3] = { 0.70710, 1, 0.70710 };
-__device__ float  sine[3] = { -0.70710 , 0, 0.70710 };
+__device__ float  cosine[3] = { 0.70710678, 1, 0.70710678 };
+__device__ float  sine[3] = { -0.70710678 , 0, 0.70710678 };
 
 __global__ void matchTemplateGPU_kernel(int* queryImage, float *greyscaleAverageQ, int* dataImage, long long int *dataImagePrefixSum, int r_d, int c_d, int r_q, int c_q, float threshold1, float threshold2, float* anserarray){
     int absi = blockIdx.x * 256 + threadIdx.x;
@@ -32,6 +32,18 @@ __global__ void matchTemplateGPU_kernel(int* queryImage, float *greyscaleAverage
         i_min = max(i_min, 0), i_max = min(i_max, r_d-1);
         j_min = max(j_min, 0), j_max = min(j_max, c_d-1);
         float greyscaleAverageD = float(dataImagePrefixSum[i_max*c_d+j_max] - ((i_min-1>=0)? dataImagePrefixSum[(i_min-1)*c_d+j_max]: 0) - ((j_min-1>=0)? dataImagePrefixSum[i_max*c_d+(j_min-1)]: 0) + ((i_min-1>=0 && j_min-1>=0)? dataImagePrefixSum[(i_min-1)*c_d+(j_min-1)]: 0))/sizeD;
+        // float greyscaleAverageD=0.0;
+        // for(int i=i_min;i<=i_max;i++){
+        //     for(int j=j_min;j<=j_max;j++){
+        //         int temp=0;
+        //         for(int k_=0;k_<3;k_++){
+        //             temp+=dataImage[(i) * 3 * c_d + j * 3 + k_];
+                
+        //         }
+        //         greyscaleAverageD+=temp/3;        
+        //     }                
+        // }
+        // greyscaleAverageD/=sizeD;
         float greyscale = abs(greyscaleAverageD - *greyscaleAverageQ);
         if (greyscale >= threshold2){
             continue;
@@ -44,7 +56,9 @@ __global__ void matchTemplateGPU_kernel(int* queryImage, float *greyscaleAverage
                 float x = i2-i2_min, y = j2-j2_min;
                 for (int k = 0; k < 3; k++){
                     float y1 = ((i2_min >= 0 && i2_min < r_d&& j2_min >= 0 && j2_min < c_d) ? dataImage[i2_min * 3 * c_d + j2_min * 3 + k] : 0)*(1-x)*(1-y) + ((i2_max >= 0 && i2_max < r_d&& j2_min >= 0 && j2_min < c_d) ? dataImage[i2_max * 3 * c_d + j2_min * 3 + k] : 0)*x*(1-y) + ((i2_min >= 0 && i2_min < r_d&& j2_max >= 0 && j2_max < c_d) ? dataImage[i2_min * 3 * c_d + j2_max * 3 + k] : 0)*(1-x)*y + ((i2_max >= 0 && i2_max < r_d&& j2_max >= 0 && j2_max < c_d) ? dataImage[i2_max * 3 * c_d + j2_max * 3 + k] : 0)*x*y;
-                    temp += pow(float(queryImage[(r_q-i-1) * 3 * c_q + j * 3 + k]) - y1, 2) / (r_q * c_q * 3.0);
+                    float tempdhairya=float(queryImage[(r_q-i-1) * 3 * c_q + j * 3 + k]) - y1;
+                    temp+=(tempdhairya*tempdhairya)/ (r_q * c_q * 3.0);
+                    // temp += pow(float(queryImage[(r_q-i-1) * 3 * c_q + j * 3 + k]) - y1, 2) / (r_q * c_q * 3.0);
 
                 }
             }
@@ -53,8 +67,8 @@ __global__ void matchTemplateGPU_kernel(int* queryImage, float *greyscaleAverage
         ans = sqrt(temp);
         if(ans<threshold1){
             anserarray[i1 * c_d * 3 + j1 * 3 + k1] = ans;
-            if(ans<2.07)
-            printf("%f, %f\n",ans,greyscale);
+            // if(ans<10)
+            // printf("%f, %f\n",ans,greyscale);
         }
     }
 }
@@ -124,8 +138,10 @@ int main(int argc, char const* argv[])
     cout << "Time taken for alllocate:\t" << (1e-6 * (std::chrono::duration_cast<std::chrono::nanoseconds>(std::chrono::high_resolution_clock::now() - begin)).count()) << "ms" << endl;
 
     matchTemplate_GPU(queryImage_GPU, greyscaleAverageQ_GPU, dataImage_GPU, dataImagePrefixSum_GPU, threshold1, threshold2, r_d, c_d, r_q, c_q, anserarray_GPU);
-    
+    std::cout << "CUDA error: " << cudaGetErrorString(cudaGetLastError()) << std::endl; // add
+
     cudaDeviceSynchronize();
+    std::cout << "CUDA error: " << cudaGetErrorString(cudaGetLastError()) << std::endl; // add
 
     cudaMemcpy(anserarray, anserarray_GPU, r_d * c_d * 3 * sizeof(float), cudaMemcpyDeviceToHost);
     
@@ -145,6 +161,7 @@ int main(int argc, char const* argv[])
     vector<vector<int> > answer(top_n.size());
     // DEBUG
     vector<float> debug_answer(top_n.size());
+    // DEBUG
     fstream fs_debug("debug.txt", fstream::out);
 
     for(int i=answer.size()-1; i>=0; i--){
@@ -168,6 +185,8 @@ int main(int argc, char const* argv[])
     auto elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
     float duration = (1e-6 * (std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin)).count());
     cout << "Time taken \t" << duration << "ms" << endl;
+    std::cout << "CUDA error: " << cudaGetErrorString(cudaGetLastError()) << std::endl; // add
+
     return 0;
 
 }

@@ -2,16 +2,16 @@ echo "#!/bin/bash
 ### Set the job name (for your reference)
 #PBS -N ML-Aggressive-big-7
 ### Set the project name, your department code by default
-#PBS -P workshop
+#PBS -P col380.cs5190421
 ### Request email when job begins and ends
 #PBS -m bea
 ### Specify email address to use for notification.
 #PBS -M $USER@iitd.ac.in
 #PBS -q high
 ####
-#PBS -l select=1:ncpus=4:ngpus=1:centos=skylake
+#PBS -l select=10:ncpus=24
 ### Specify "wallclock time" required for this job, hhh:mm:ss
-#PBS -l walltime=06:00:00
+#PBS -l walltime=00:04:00
 
 ### #PBS -l software=replace_with_Your_software_name
 # After job starts, must goto working directory. 
@@ -25,9 +25,9 @@ pwd
 module load apps/anaconda/3
 module load compiler/gcc/9.1.0 
 module load compiler/gcc/9.1/openmpi/4.0.2
-
-python3 final_v2.py
+cd /scratch/cse/dual/cs5190421/2019CS50421
+./bf.sh 10 24
 $*" > temp.sh
 qsub temp.sh 
-# rm temp.sh
+rm temp.sh
 # 5k data 7-8 epochs
